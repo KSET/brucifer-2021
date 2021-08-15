@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&family=Righteous&display=swap');
+
+/*------------------ GLOBAL STUFF ------------------*/
+
+:root {
+    --bruc-white: #f0feff;
+    --bruc-black: #0c001e;
+
+    --topbar-border-height: 6px;
+    --coming-soon-image-aspect-ratio: 0.5625;
+    --padding-percent: 6.25;
+}
+
+html {
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    background-color: var(--bruc-black);
+}
+
+a {
+    text-decoration: none;
+    color: var(--bruc-white);
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Righteous', cursive;
+}
+
+/*------------------ TOPBAR ------------------*/
+
+.white {
+    color: var(--bruc-white) !important;
+}
+
+.topbar {
+    font-family: 'Righteous', cursive;
+    display: grid;
+    align-content: stretch;
+    width: calc(100% - (var(--padding-percent) * 2) * 1%);
+    height: 64px;
+    margin: 0 auto;
+    grid-template-columns: 1fr 1fr;
+}
+
+.topbar .title {
+    font-size: 1.125rem;
+    align-self: center;
+}
+
+.topbar .links {
+    display: flex;
+    justify-self: right;
+}
+
+@media screen and (max-width: 980px) {
+    .topbar .links {
+        display: none;
+    }
+}
+
+.topbar .burger-menu {
+    display: none;
+    align-self: center;
+    padding: .6rem;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    justify-self: end;
+}
+
+@media screen and (max-width: 980px) {
+    .topbar .burger-menu {
+        display: inline-block;
+    }
+}
+
+.topbar .links a {
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+}
+
+.topbar .links a + a {
+    margin-left: 1.5rem;
+}
+
+.topbar .links a.active {
+    border-color: inherit;
+    border-top: var(--topbar-border-height) solid transparent;
+    border-bottom: var(--topbar-border-height) solid;
+}
+
+/*------------------ MOBILE LINKS ------------------*/
+
+#links-opener {
+    display: none;
+}
+
+#links-opener:checked + .links-mobile {
+    display: block;
+}
+
+@media screen and (min-width: 981px) {
+    /* Hide links when screen size exceeds mobile dimensions */
+    #links-opener:checked + .links-mobile {
+        display: none;
+    }
+}
+
+.links-mobile {
+    font-family: 'Righteous', cursive;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    background-color: var(--bruc-black);
+}
+
+.links-mobile .links-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4rem;
+}
+
+.links-mobile .links-container a {
+    font-size: 1.4rem;
+    padding: 0 calc(var(--padding-percent) * 1vw);
+}
+
+.links-mobile .links-container a > span {
+    display: block;
+    padding-bottom: .3em;
+}
+
+.links-mobile .links-container a.active span {
+    border-color: inherit;
+    border-top: var(--topbar-border-height) solid transparent;
+    border-bottom: var(--topbar-border-height) solid;
+}
+
+.links-mobile .links-container a + a {
+    margin-top: 1.4rem;
+}
+
+/*------------------ MAIN PAGE ------------------*/
+main > img {
+    width: 100%;
+}
+
+.image-container {
+    position: relative;
+}
+
+.image-container .image-sizer {
+    padding-bottom: calc(var(--coming-soon-image-aspect-ratio) * 100%);
+    transition: padding-bottom .3s ease;
+    will-change: padding-bottom;
+}
+
+@media screen and (max-width: 980px) {
+    .image-container .image-sizer {
+        padding-bottom: calc(1 / var(--coming-soon-image-aspect-ratio) * 100%);
+    }
+}
+
+.image-container .image-frame,
+.image-container .image-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.image-container .image-frame {
+    z-index: -1;
+}
+
+.image-container .image-content {
+    z-index: 9;
+}
+
+/*------------------ FOOTER ------------------*/
+
+footer {
+    display: flex;
+    align-items: center;
+    height: 110px;
+    padding: 0 calc(var(--padding-percent) * 1vw);
+    color: var(--bruc-white);
+    background-color: var(--bruc-black);
+}
