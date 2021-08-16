@@ -2,8 +2,8 @@ OUTPUT_BINARY=bin/brucifer
 
 .PHONY: build
 build:
-	go build -ldflags '-s -w' -o "${OUTPUT_BINARY}" main.go
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -tags osusergo,netgo -ldflags '-s -w -extldflags "-static"' -o "${OUTPUT_BINARY}" main.go
 
-.PHONY: build
+.PHONY: compact
 compact: build
 	upx --brute "${OUTPUT_BINARY}"
