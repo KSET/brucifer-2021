@@ -6,8 +6,10 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 
 	flag "github.com/spf13/pflag"
@@ -30,7 +32,15 @@ func main() {
 
 	flag.Parse()
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		GETOnly:          true,
+		DisableKeepalive: true,
+		ReadTimeout:      10 * time.Second,
+		ServerHeader:     "Microsoft-IIS/7.0",
+		AppName:          "Brucifer 2021.",
+	})
+
+	app.Use(etag.New())
 
 	app.Get("/favicon.ico", func(c *fiber.Ctx) error {
 		c.Type("ico")
@@ -46,12 +56,12 @@ func main() {
 	}))
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		c.Type("html")
+		c.Type("html", "utf-8")
 		return c.SendString(indexHtml)
 	})
 
 	app.Get("/kontakt", func(c *fiber.Ctx) error {
-		c.Type("html")
+		c.Type("html", "utf-8")
 		return c.SendString(kontaktHtml)
 	})
 
