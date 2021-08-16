@@ -8,7 +8,7 @@
     <link href="./assets/styles/page.css" rel="stylesheet">
     <style>
         :root {
-            --content-padding: 12;
+            --content-padding: 8.5;
         }
 
         @media screen and (max-width: 980px) {
@@ -30,7 +30,8 @@
 
         .contents {
             font-size: 1.5rem;
-            padding: calc(var(--content-padding) * 1vw);
+            padding-top: calc(var(--content-padding) * 0.85 * 1vw);
+            padding-left: calc(var(--content-padding) * 1vw);
             transition: padding .3s ease, font-size .3s ease;
             will-change: padding, font-size;
         }
