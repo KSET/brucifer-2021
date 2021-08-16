@@ -11,6 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 
 	flag "github.com/spf13/pflag"
 )
@@ -40,6 +41,7 @@ func main() {
 		AppName:          "Brucifer 2021.",
 	})
 
+	app.Use(recover.New())
 	app.Use(etag.New())
 
 	app.Get("/favicon.ico", func(c *fiber.Ctx) error {
