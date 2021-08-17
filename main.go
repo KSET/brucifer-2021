@@ -11,6 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 
 	flag "github.com/spf13/pflag"
@@ -43,6 +44,22 @@ func main() {
 
 	app.Use(recover.New())
 	app.Use(etag.New())
+	app.Use(logger.New(logger.Config{
+		Format: "[${time}] ${method} ${path}\t| ${status} ${latency}\t| ${ua}\t| ${ips} \n",
+	}))
+
+	app.Use(func(c *fiber.Ctx) error {
+		// Set some security headers:
+		c.Set("X-XSS-Protection", "1; mode=block")
+		c.Set("X-Content-Type-Options", "nosniff")
+		c.Set("X-Download-Options", "noopen")
+		c.Set("X-Frame-Options", "SAMEORIGIN")
+		c.Set("X-DNS-Prefetch-Control", "off")
+		// c.Set("Strict-Transport-Security", "max-age=5184000")
+
+		// Go to next middleware:
+		return c.Next()
+	})
 
 	app.Get("/favicon.ico", func(c *fiber.Ctx) error {
 		c.Type("ico")
