@@ -24,3 +24,16 @@ U izvršnoj datoteci je sadržano sve što je potrebno da aplikacija normalno ra
 ```bash
 ./bin/brucifer --host '0.0.0.0' --port 3000
 ```
+
+
+
+## `docker-compose`
+Pokretanje pomoću Docker-a osigurava da će se aplikacija konzistentno ponašati.
+
+Da bi se aplikacija pokrenula pomoću dockera potrebno je osigurati da su instalirani i [Docker](https://www.docker.com/) (i to tako da se može pokrenuti bez korištenja `sudo` ili sličnih alata) i [`docker-compose`](https://docs.docker.com/compose/) alati.
+
+| Naredba       | Opis                                  |
+| ---           | ---                                   |
+| server/start  | Builda i pokreće server               |
+| server/stop   | Zaustavlja i gasi                     |
+

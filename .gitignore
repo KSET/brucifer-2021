@@ -2,3 +2,7 @@
 .vscode
 
 bin/
+
+.env
+
+docker-compose.override.yml
