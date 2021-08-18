@@ -1,10 +1,10 @@
 # Statically build app with all needed dependencies
-FROM golang:1.17-alpine as builder
+FROM golang:1.17 as builder
 
 WORKDIR /go/src/app
 
-RUN apk update \
-    && apk add --update \
+RUN apt update \
+    && apt install \
     upx \
     make
 
