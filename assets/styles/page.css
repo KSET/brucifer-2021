@@ -5,21 +5,35 @@
 :root {
     --bruc-white: #f0feff;
     --bruc-black: #0c001e;
+    --bruc-yellow: #f4d51d;
+    --bruc-pink: #f0526d;
+    --bruc-orange: #f6892a;
 
     --topbar-border-height: 6px;
-    --coming-soon-image-aspect-ratio: 0.5625;
     --padding-percent: 6.25;
+    --content-padding: 8.5;
+
+    --background-image-aspect-ratio: 0.793988269795;
+    --background-image: url("/assets/images/bg.png");
+}
+
+@media screen and (max-width: 980px) {
+    :root {
+        --content-padding: 6.66;
+        --background-image: url("/assets/images/bg-mobile.png");
+        --background-image-aspect-ratio: 2.46944444444;
+    }
 }
 
 html {
     font-family: 'Raleway', sans-serif;
     font-size: 16px;
-    background-color: var(--bruc-black);
+    background-color: var(--bruc-orange);
 }
 
 a {
     text-decoration: none;
-    color: var(--bruc-white);
+    color: var(--bruc-black);
 }
 
 h1,
@@ -33,15 +47,22 @@ h4 {
 
 .white {
     color: var(--bruc-white) !important;
+    fill: var(--bruc-white) !important;
+}
+
+.black {
+    color: var(--bruc-black) !important;
+    fill: var(--bruc-black) !important;
 }
 
 .topbar {
     font-family: 'Righteous', cursive;
     display: grid;
     align-content: stretch;
-    width: calc(100% - (var(--padding-percent) * 2) * 1%);
     height: 64px;
-    margin: 0 auto;
+    padding: 0 calc(var(--padding-percent) * 1vw);
+    color: var(--bruc-black);
+    background: var(--bruc-yellow);
     grid-template-columns: 1fr 1fr;
 }
 
@@ -79,8 +100,11 @@ h4 {
 
 .topbar .links a {
     font-size: 0.875rem;
+    font-weight: normal;
+    font-style: normal;
     display: flex;
     align-items: center;
+    color: var(--bruc-black);
 }
 
 .topbar .links a + a {
@@ -119,7 +143,7 @@ h4 {
     bottom: 0;
     left: 0;
     display: none;
-    background-color: var(--bruc-black);
+    background-color: var(--bruc-yellow);
 }
 
 .links-mobile .links-container {
@@ -149,53 +173,100 @@ h4 {
 }
 
 /*------------------ MAIN PAGE ------------------*/
-main > img {
-    width: 100%;
-}
-
-.image-container {
+main {
     position: relative;
 }
 
-.image-container .image-sizer {
-    padding-bottom: calc(var(--coming-soon-image-aspect-ratio) * 100%);
+main::after {
+    position: relative;
+    display: block;
+    padding-bottom: calc(var(--background-image-aspect-ratio) * 100%);
+    content: "";
     transition: padding-bottom .3s ease;
     will-change: padding-bottom;
 }
 
-@media screen and (max-width: 980px) {
-    .image-container .image-sizer {
-        padding-bottom: calc(1 / var(--coming-soon-image-aspect-ratio) * 100%);
-    }
-}
-
-.image-container .image-frame,
-.image-container .image-content {
+main::before {
     position: absolute;
+    z-index: -1;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    content: "";
+    background-image: var(--background-image);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
 }
 
-.image-container .image-frame {
-    z-index: -1;
+.contents {
+    font-size: 1.5rem;
+    padding: 0 calc(var(--content-padding) * 1vw);
+    padding-top: calc(var(--content-padding) * 0.85 * 1vw);
+    transition: padding .3s ease, font-size .3s ease;
+    will-change: padding, font-size;
 }
 
-.image-container .image-content {
-    z-index: 9;
+@media screen and (max-width: 980px) {
+    .contents {
+        font-size: 1.125rem;
+    }
+}
+
+.contents h2 {
+    font-size: 1.5em;
+}
+
+.contents section {
+    color: var(--bruc-black);
+}
+
+.contents section + section {
+    margin-top: 6rem;
+    transition: margin-top .3s ease;
+    will-change: margin-top;
+}
+
+@media screen and (max-width: 980px) {
+    .contents section + section {
+        margin-top: 4rem;
+    }
+}
+
+.contents section > * {
+    margin-bottom: 1em;
+}
+
+.contents section a {
+    color: var(--bruc-black);
+}
+
+.contents section hr {
+    width: 5rem;
+    margin: 1.5rem 0;
+    border-color: var(--bruc-black);
 }
 
 /*------------------ FOOTER ------------------*/
 
+footer::before {
+    position: absolute;
+    top: -81px;
+    right: 0;
+    left: 0;
+    height: 82px;
+    content: "";
+    background-image: url(/assets/images/footer/bg.svg);
+    background-size: cover;
+}
+
 footer {
+    position: relative;
     display: flex;
     align-items: center;
     height: 110px;
     padding: 0 calc(var(--padding-percent) * 1vw);
     color: var(--bruc-white);
-    background-color: var(--bruc-black);
+    background-color: var(--bruc-pink);
 }

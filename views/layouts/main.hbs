@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="hr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+        <title>Brucošijada FER-a 2021.</title>
+        <link href="/assets/styles/reset.css" rel="stylesheet">
+        <link href="/assets/styles/page.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <input id="links-opener" type="checkbox">
+        <div class="links-mobile">
+            <header class="topbar">
+                <h1 class="title">
+                    <a class="black" href="/">BRUCOŠIJADA FER-A</a>
+                </h1>
+
+                <label class="burger-menu" for="links-opener">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M2.58225 0.442321C1.99153 -0.14744 1.03377 -0.14744 0.443044 0.442321C-0.147682 1.03208 -0.147681 1.98828 0.443045 2.57804L6.87557 9.00005L0.443273 15.4218C-0.147454 16.0116 -0.147454 16.9678 0.443273 17.5576C1.034 18.1473 1.99176 18.1473 2.58248 17.5576L9.01478 11.1358L15.4175 17.528C16.0082 18.1178 16.966 18.1178 17.5567 17.528C18.1475 16.9383 18.1475 15.9821 17.5567 15.3923L11.154 9.00005L17.557 2.60755C18.1477 2.01779 18.1477 1.0616 17.557 0.471834C16.9662 -0.117927 16.0085 -0.117926 15.4177 0.471835L9.01478 6.86434L2.58225 0.442321Z"
+                                class="black"
+                        />
+                    </svg>
+                </label>
+            </header>
+
+            <section class="links-container">
+                {{> 'partials/layouts/main/links' }}
+            </section>
+        </div>
+
+        <header class="topbar">
+            <h1 class="title">
+                <a class="black" href="/">BRUCOŠIJADA FER-A</a>
+            </h1>
+
+            <label class="burger-menu" for="links-opener">
+                <svg width="24" height="19" viewBox="0 0 24 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M0 1.5C0 0.671573 0.671573 0 1.5 0H22.5C23.3284 0 24 0.671573 24 1.5C24 2.32843 23.3284 3 22.5 3H1.5C0.671573 3 0 2.32843 0 1.5ZM0 9.5C0 8.67157 0.671573 8 1.5 8H22.5C23.3284 8 24 8.67157 24 9.5C24 10.3284 23.3284 11 22.5 11H1.5C0.671573 11 0 10.3284 0 9.5ZM9.5 16C8.67157 16 8 16.6716 8 17.5C8 18.3284 8.67157 19 9.5 19H22.5C23.3284 19 24 18.3284 24 17.5C24 16.6716 23.3284 16 22.5 16H9.5Z"
+                            class="black"
+                    />
+                </svg>
+            </label>
+
+            <div class="links">
+                {{> 'partials/layouts/main/links' }}
+            </div>
+        </header>
+        <main>
+            <div class="contents">
+                {{{embed}}}
+            </div>
+        </main>
+        <footer>
+            KSET © Copyright 2021. All Rights Reserved.
+        </footer>
+    </body>
+</html>

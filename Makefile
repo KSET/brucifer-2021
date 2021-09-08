@@ -10,6 +10,15 @@ build:
 compact: build
 	upx --brute "${OUTPUT_BINARY}"
 
+.PHONY: dev/server
+dev/server:
+	gin \
+		--all \
+		--immediate \
+		--bin "${OUTPUT_BINARY}" \
+		run \
+		main.go
+
 .PHONY: server/start
 server/start: $docker/build $docker/up
 

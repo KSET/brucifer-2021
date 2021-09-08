@@ -6,7 +6,13 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 	"time"
+
+	"github.com/joho/godotenv"
+
+	"brucosijada.kset.org/src/template/handlebars"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/etag"
@@ -20,19 +26,46 @@ import (
 //go:embed assets/*
 var assets embed.FS
 
-//go:embed index.html
-var indexHtml string
+//go:embed views/*
+var views embed.FS
 
-//go:embed kontakt.html
-var kontaktHtml string
+const defaultPort = 3000
+const defaultHost = "0.0.0.0"
 
 func main() {
+	envPort, err := strconv.ParseInt(os.Getenv("PORT"), 0, 32)
+	if err != nil || envPort == 0 {
+		envPort = defaultPort
+	}
+
+	envHost := os.Getenv("HOST")
+	if envHost == "" {
+		envHost = defaultHost
+	}
+
 	var port int
 	var host string
-	flag.IntVarP(&port, "port", "p", 3000, "Set the port on which the server will run")
-	flag.StringVarP(&host, "host", "h", "0.0.0.0", "Set the host to which the server will bind")
+
+	flag.IntVarP(&port, "port", "p", int(envPort), "Set the port on which the server will run")
+	flag.StringVarP(&host, "host", "h", envHost, "Set the host to which the server will bind")
 
 	flag.Parse()
+
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	// db, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_URL")), &gorm.Config{})
+	//
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	viewsFolder, _ := fs.Sub(views, "views")
+	engine := handlebars.NewFileSystem(
+		http.FS(viewsFolder),
+		".hbs",
+	)
 
 	app := fiber.New(fiber.Config{
 		GETOnly:          true,
@@ -40,13 +73,28 @@ func main() {
 		ReadTimeout:      10 * time.Second,
 		ServerHeader:     "Microsoft-IIS/7.0",
 		AppName:          "Brucifer 2021.",
+		Views:            engine,
 	})
+
+	// println(db)
 
 	app.Use(recover.New())
 	app.Use(etag.New())
 	app.Use(logger.New(logger.Config{
 		Format: "[${time}] ${method} ${path}\t| ${status} ${latency}\t| ${ua}\t| ${ips} \n",
 	}))
+	app.Use(func(c *fiber.Ctx) error {
+		// start timer
+		start := time.Now()
+		// next routes
+		err := c.Next()
+		// stop timer
+		stop := time.Now()
+		// Do something with response
+		c.Append("Server-Timing", fmt.Sprintf("app;dur=%v", stop.Sub(start).String()))
+		// return stack error if exist
+		return err
+	})
 
 	app.Use(func(c *fiber.Ctx) error {
 		// Set some security headers:
@@ -75,13 +123,35 @@ func main() {
 	}))
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		c.Type("html", "utf-8")
-		return c.SendString(indexHtml)
+		return c.Render(
+			"index",
+			fiber.Map{},
+			"layouts/main",
+		)
 	})
 
 	app.Get("/kontakt", func(c *fiber.Ctx) error {
-		c.Type("html", "utf-8")
-		return c.SendString(kontaktHtml)
+		return c.Render(
+			"kontakt",
+			fiber.Map{},
+			"layouts/main",
+		)
+	})
+
+	app.Get("/ulaznice", func(c *fiber.Ctx) error {
+		return c.Render(
+			"ulaznice",
+			fiber.Map{},
+			"layouts/main",
+		)
+	})
+
+	app.Get("/pravila", func(c *fiber.Ctx) error {
+		return c.Render(
+			"pravila",
+			fiber.Map{},
+			"layouts/main",
+		)
 	})
 
 	log.Fatal(app.Listen(fmt.Sprintf("%s:%d", host, port)))
