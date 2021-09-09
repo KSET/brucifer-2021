@@ -29,7 +29,6 @@ server/stop: $docker/down
 $docker/build:
 	docker-compose build \
     		--compress \
-    		--parallel \
     		--pull
 
 .PHONY: $docker/up
