@@ -33,6 +33,10 @@ const defaultPort = 3000
 const defaultHost = "0.0.0.0"
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("Error loading .env file: ", err)
+	}
+
 	envPort, err := strconv.ParseInt(os.Getenv("PORT"), 0, 32)
 	if err != nil || envPort == 0 {
 		envPort = defaultPort
@@ -50,10 +54,6 @@ func main() {
 	flag.StringVarP(&host, "host", "h", envHost, "Set the host to which the server will bind")
 
 	flag.Parse()
-
-	if err := godotenv.Load(); err != nil {
-		log.Println("Error loading .env file")
-	}
 
 	// db, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_URL")), &gorm.Config{})
 	//
