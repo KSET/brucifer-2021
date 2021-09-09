@@ -10,6 +10,10 @@ build:
 compact: build
 	upx --brute "${OUTPUT_BINARY}"
 
+.PHONY: $pull
+$pull:
+	git pull --rebase
+
 .PHONY: dev/server
 dev/server:
 	gin \
@@ -20,10 +24,19 @@ dev/server:
 		main.go
 
 .PHONY: server/start
-server/start: docker/build docker/up
+server/start: docker/up
 
 .PHONY: server/stop
 server/stop: docker/down
+
+.PHONY: server/restart
+server/restart: server/stop server/start
+
+.PHONY: server/rebuild
+server/rebuild: docker/build server/restart
+
+.PHONY: server/rebuild
+server/redeploy: $pull server/rebuild
 
 .PHONY: docker/build
 docker/build:
