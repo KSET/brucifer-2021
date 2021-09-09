@@ -20,19 +20,19 @@ dev/server:
 		main.go
 
 .PHONY: server/start
-server/start: $docker/build $docker/up
+server/start: docker/build docker/up
 
 .PHONY: server/stop
-server/stop: $docker/down
+server/stop: docker/down
 
-.PHONY: $docker/build
-$docker/build:
+.PHONY: docker/build
+docker/build:
 	docker-compose build \
     		--compress \
     		--pull
 
-.PHONY: $docker/up
-$docker/up:
+.PHONY: docker/up
+docker/up:
 	docker-compose \
 		--project-name 'brucifer-2021' \
 		up \
@@ -40,8 +40,8 @@ $docker/up:
 		--remove-orphans \
 		--build
 
-.PHONY: $docker/down
-$docker/down:
+.PHONY: docker/down
+docker/down:
 	docker-compose \
 		down \
 		--remove-orphans
