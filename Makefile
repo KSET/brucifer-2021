@@ -35,7 +35,7 @@ server/restart: server/stop server/start
 .PHONY: server/rebuild
 server/rebuild: docker/build server/restart
 
-.PHONY: server/rebuild
+.PHONY: server/redeploy
 server/redeploy: $pull server/rebuild
 
 .PHONY: docker/build
