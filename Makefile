@@ -10,6 +10,10 @@ build:
 compact: build
 	upx --brute "${OUTPUT_BINARY}"
 
+.PHONY: sync-deps
+sync-deps:
+	CGO_ENABLED=0 go mod download
+
 .PHONY: $pull
 $pull:
 	git pull --rebase

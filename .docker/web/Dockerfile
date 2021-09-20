@@ -8,6 +8,10 @@ RUN apt update \
     upx \
     make
 
+COPY Makefile go.mod go.sum ./
+
+RUN make sync-deps
+
 COPY . .
 
 RUN make build
