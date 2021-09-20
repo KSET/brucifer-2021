@@ -5,4 +5,6 @@ services:
     build:
       context: .
       dockerfile: .docker/web/Dockerfile
+    volumes:
+      - .env:/root/.env:ro
     restart: always
