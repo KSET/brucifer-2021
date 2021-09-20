@@ -99,7 +99,7 @@ func main() {
 
 	app.Use(helmet.New(helmet.Config{
 		ReferrerPolicy:        "no-referrer-when-downgrade",
-		ContentSecurityPolicy: "default-src 'self'; style-src 'self' fonts.googleapis.com 'sha256-Ti7r9yBH+4QYBw011dOX3wsrskik/E0NNN3tNsdFTDw=' 'sha256-9sr6tDEbWwUiCy6TgwEAHgGGz2scGplIKDjkpkDanb0=' 'sha256-FVLanvfJQIpUweRHJtois7ZhhD1+NPuI/KD91VG0pcc='; font-src fonts.gstatic.com",
+		ContentSecurityPolicy: "default-src 'self'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com",
 	}))
 
 	app.Get("/favicon.ico", func(c *fiber.Ctx) error {
