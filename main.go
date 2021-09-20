@@ -154,5 +154,13 @@ func main() {
 		)
 	})
 
+	app.Get("/lineup", func(c *fiber.Ctx) error {
+		return c.Render(
+			"lineup",
+			fiber.Map{},
+			"layouts/main",
+		)
+	})
+
 	log.Fatal(app.Listen(fmt.Sprintf("%s:%d", host, port)))
 }

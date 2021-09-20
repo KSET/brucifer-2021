@@ -13,22 +13,22 @@
     --padding-percent: 6.25;
     --content-padding: 8.5;
 
-    --background-image-aspect-ratio: 0.793988269795;
-    --background-image: url("/assets/images/bg.png");
+    --background-image: url("/assets/images/bg.svg");
+    --background-image-aspect-ratio: calc(879 / 1366);
 }
 
 @media screen and (max-width: 980px) {
     :root {
         --content-padding: 6.66;
-        --background-image: url("/assets/images/bg-mobile.png");
-        --background-image-aspect-ratio: 2.46944444444;
+        --background-image: url("/assets/images/bg-mobile.svg");
+        --background-image-aspect-ratio: calc(1774 / 360);
     }
 }
 
 html {
     font-family: 'Raleway', sans-serif;
     font-size: 16px;
-    background-color: var(--bruc-orange);
+    background-color: var(--bruc-pink);
 }
 
 a {

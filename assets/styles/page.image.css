@@ -1,0 +1,52 @@
+main {
+    background-image: none;
+}
+
+main::before {
+    display: none;
+}
+
+main::after {
+    display: none;
+}
+
+.contents {
+    padding: 0;
+}
+
+.image-container {
+    position: relative;
+}
+
+.image-container .image-sizer {
+    padding-bottom: calc(var(--background-image-aspect-ratio) * 100%);
+    transition: padding-bottom .3s ease;
+    will-change: padding-bottom;
+}
+
+.image-container .image-frame,
+.image-container .image-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.image-container .image-frame {
+    z-index: -1;
+}
+
+.image-container .image-content {
+    z-index: 9;
+    padding: 0 calc(var(--content-padding) * 1vw);
+    padding-top: calc(var(--content-padding) * 0.85 * 1vw);
+    max-width: calc(100vw - var(--content-padding) * 2vw - 20px);
+}
+
+.image-container .image-frame {
+    background-image: var(--background-image);
+}
