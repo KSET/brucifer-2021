@@ -19,6 +19,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/helmet/v2"
 
 	flag "github.com/spf13/pflag"
 )
@@ -96,18 +97,10 @@ func main() {
 		return err
 	})
 
-	app.Use(func(c *fiber.Ctx) error {
-		// Set some security headers:
-		c.Set("X-XSS-Protection", "1; mode=block")
-		c.Set("X-Content-Type-Options", "nosniff")
-		c.Set("X-Download-Options", "noopen")
-		c.Set("X-Frame-Options", "SAMEORIGIN")
-		c.Set("X-DNS-Prefetch-Control", "off")
-		// c.Set("Strict-Transport-Security", "max-age=5184000")
-
-		// Go to next middleware:
-		return c.Next()
-	})
+	app.Use(helmet.New(helmet.Config{
+		ReferrerPolicy:        "no-referrer-when-downgrade",
+		ContentSecurityPolicy: "default-src 'self'; style-src 'self' fonts.googleapis.com; font-src fonts.gstatic.com",
+	}))
 
 	app.Get("/favicon.ico", func(c *fiber.Ctx) error {
 		c.Type("ico")
