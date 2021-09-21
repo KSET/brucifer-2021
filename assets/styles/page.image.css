@@ -1,4 +1,5 @@
 main {
+    padding-bottom: 0;
     background-image: none;
 }
 
@@ -42,9 +43,9 @@ main::after {
 
 .image-container .image-content {
     z-index: 9;
+    max-width: calc(100vw - var(--content-padding) * 2vw - 20px);
     padding: 0 calc(var(--content-padding) * 1vw);
     padding-top: calc(var(--content-padding) * 0.85 * 1vw);
-    max-width: calc(100vw - var(--content-padding) * 2vw - 20px);
 }
 
 .image-container .image-frame {

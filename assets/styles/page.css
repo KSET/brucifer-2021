@@ -175,28 +175,10 @@ h4 {
 /*------------------ MAIN PAGE ------------------*/
 main {
     position: relative;
-}
-
-main::after {
-    position: relative;
-    display: block;
-    padding-bottom: calc(var(--background-image-aspect-ratio) * 100%);
-    content: "";
-    transition: padding-bottom .3s ease;
-    will-change: padding-bottom;
-}
-
-main::before {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    content: "";
+    padding-bottom: 82px;
     background-image: var(--background-image);
     background-repeat: no-repeat;
-    background-position: center center;
+    background-position: top right;
     background-size: cover;
 }
 
