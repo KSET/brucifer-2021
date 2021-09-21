@@ -258,7 +258,7 @@ footer::before {
     height: 82px;
     content: "";
     background-image: url(/assets/images/footer/bg.svg);
-    background-size: cover;
+    background-repeat: repeat-x;
 }
 
 footer {
