@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"time"
 
+	"brucosijada.kset.org/routes"
 	"github.com/joho/godotenv"
 
 	"brucosijada.kset.org/src/template/handlebars"
@@ -69,7 +70,6 @@ func main() {
 	)
 
 	app := fiber.New(fiber.Config{
-		GETOnly:          true,
 		DisableKeepalive: true,
 		ReadTimeout:      10 * time.Second,
 		ServerHeader:     "Microsoft-IIS/7.0",
@@ -115,45 +115,7 @@ func main() {
 		Root: http.FS(assetsFs),
 	}))
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Render(
-			"index",
-			fiber.Map{},
-			"layouts/main",
-		)
-	})
-
-	app.Get("/kontakt", func(c *fiber.Ctx) error {
-		return c.Render(
-			"kontakt",
-			fiber.Map{},
-			"layouts/main",
-		)
-	})
-
-	app.Get("/ulaznice", func(c *fiber.Ctx) error {
-		return c.Render(
-			"ulaznice",
-			fiber.Map{},
-			"layouts/main",
-		)
-	})
-
-	app.Get("/pravila", func(c *fiber.Ctx) error {
-		return c.Render(
-			"pravila",
-			fiber.Map{},
-			"layouts/main",
-		)
-	})
-
-	app.Get("/lineup", func(c *fiber.Ctx) error {
-		return c.Render(
-			"lineup",
-			fiber.Map{},
-			"layouts/main",
-		)
-	})
+	routes.RegisterRoutes(app)
 
 	log.Fatal(app.Listen(fmt.Sprintf("%s:%d", host, port)))
 }
