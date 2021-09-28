@@ -1,10 +1,10 @@
-package routes
+package base
 
 import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func registerBaseRoutes(app *fiber.App) {
+func RegisterRoutes(app *fiber.App) {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render(
 			"index",
