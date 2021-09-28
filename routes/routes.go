@@ -6,5 +6,10 @@ import (
 )
 
 func RegisterRoutes(app *fiber.App) {
-	base.RegisterRoutes(app)
+	Base := app.Group("/")
+	Base.Get("/", base.Home)
+	Base.Get("/kontakt", base.Contact)
+	Base.Get("/ulaznice", base.Tickets)
+	Base.Get("/pravila", base.Rules)
+	Base.Get("/lineup", base.Lineup)
 }
