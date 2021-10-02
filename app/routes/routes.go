@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"brucosijada.kset.org/routes/base"
+	"brucosijada.kset.org/app/routes/base"
 	"github.com/gofiber/fiber/v2"
 )
 

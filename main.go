@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"time"
 
-	"brucosijada.kset.org/routes"
+	"brucosijada.kset.org/app/routes"
 	"github.com/joho/godotenv"
 
 	"brucosijada.kset.org/src/template/handlebars"
