@@ -6,9 +6,9 @@ import (
 
 type Sponsor struct {
 	Base
-	Name    string `json:"name"`
-	Image   Image  `json:"image" gorm:"polymorphic:Owner"`
-	Order   int    `json:"order" gorm:"index"`
+	Name  string `json:"name"`
+	Image Image  `json:"image" gorm:"polymorphic:Owner"`
+	Order int    `json:"order" gorm:"index"`
 }
 
 // AfterDelete hook defined for cascade delete

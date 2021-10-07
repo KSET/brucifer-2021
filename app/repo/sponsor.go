@@ -21,9 +21,9 @@ type SponsorItemLogo struct {
 }
 
 type SponsorItem struct {
-	Id    uuid.UUID         `json:"id"`
-	Name  string            `json:"name"`
-	Logo  []SponsorItemLogo `json:"logo"`
+	Id   uuid.UUID         `json:"id"`
+	Name string            `json:"name"`
+	Logo []SponsorItemLogo `json:"logo"`
 }
 
 func Sponsor() sponsorRepo {
@@ -78,9 +78,9 @@ func (r sponsorRepo) ListSimple() (*[]SponsorItem, error) {
 		}
 
 		items[i] = SponsorItem{
-			Id:    sponsor.UUID,
-			Name:  sponsor.Name,
-			Logo:  logos,
+			Id:   sponsor.UUID,
+			Name: sponsor.Name,
+			Logo: logos,
 		}
 	}
 

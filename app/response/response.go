@@ -6,8 +6,8 @@ import (
 
 func Success(data interface{}) fiber.Map {
 	return fiber.Map{
-		"status":  "success",
-		"data":    data,
+		"status": "success",
+		"data":   data,
 	}
 }
 
