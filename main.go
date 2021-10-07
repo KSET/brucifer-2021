@@ -12,11 +12,12 @@ import (
 
 	"github.com/joho/godotenv"
 
-	`brucosijada.kset.org/app/providers/database`
-	`brucosijada.kset.org/app/providers/minio`
-	`brucosijada.kset.org/app/providers/session`
+	"brucosijada.kset.org/app/providers/database"
+	"brucosijada.kset.org/app/providers/hash"
+	"brucosijada.kset.org/app/providers/minio"
+	"brucosijada.kset.org/app/providers/session"
 	"brucosijada.kset.org/app/routes"
-	`brucosijada.kset.org/app/util/async`
+	"brucosijada.kset.org/app/util/async"
 
 	"brucosijada.kset.org/src/template/handlebars"
 
@@ -63,9 +64,9 @@ func main() {
 	flag.Parse()
 
 	_, err = async.Async().RunInParallel(
-		// func() (interface{}, error) {
-		// 	return nil, hash.HashProvider().CalibrateMemoryParam(time.Second)
-		// },
+		func() (interface{}, error) {
+			return nil, hash.HashProvider().CalibrateMemoryParam(time.Second)
+		},
 		func() (interface{}, error) {
 			return nil, database.DatabaseProvider().Register()
 		},
