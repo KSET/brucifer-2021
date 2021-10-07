@@ -1,0 +1,15 @@
+# Statically build app with all needed dependencies
+FROM golang:1.17
+
+WORKDIR /go/src/app
+
+RUN apt update \
+    && apt install \
+    upx \
+    make
+
+RUN go get github.com/codegangsta/gin
+
+ENV PORT=3001
+
+CMD [ "make", "dev/server" ]

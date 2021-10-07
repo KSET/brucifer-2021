@@ -10,8 +10,13 @@ import (
 	"strconv"
 	"time"
 
-	"brucosijada.kset.org/app/routes"
 	"github.com/joho/godotenv"
+
+	`brucosijada.kset.org/app/providers/database`
+	`brucosijada.kset.org/app/providers/minio`
+	`brucosijada.kset.org/app/providers/session`
+	"brucosijada.kset.org/app/routes"
+	`brucosijada.kset.org/app/util/async`
 
 	"brucosijada.kset.org/src/template/handlebars"
 
@@ -57,11 +62,23 @@ func main() {
 
 	flag.Parse()
 
-	// db, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_URL")), &gorm.Config{})
-	//
-	// if err != nil {
-	// 	panic(err)
-	// }
+	_, err = async.Async().RunInParallel(
+		// func() (interface{}, error) {
+		// 	return nil, hash.HashProvider().CalibrateMemoryParam(time.Second)
+		// },
+		func() (interface{}, error) {
+			return nil, database.DatabaseProvider().Register()
+		},
+		func() (interface{}, error) {
+			return nil, session.SessionProvider().Register()
+		},
+		func() (interface{}, error) {
+			return nil, minio.MinioProvider().Register()
+		},
+	).All()
+	if err != nil {
+		panic(err)
+	}
 
 	viewsFolder, _ := fs.Sub(views, "views")
 	engine := handlebars.NewFileSystem(
@@ -69,51 +86,71 @@ func main() {
 		".hbs",
 	)
 
-	app := fiber.New(fiber.Config{
-		DisableKeepalive: true,
-		ReadTimeout:      10 * time.Second,
-		ServerHeader:     "Microsoft-IIS/7.0",
-		AppName:          "Brucifer 2021.",
-		Views:            engine,
-	})
+	app := fiber.New(
+		fiber.Config{
+			DisableKeepalive: true,
+			ReadTimeout:      10 * time.Second,
+			ServerHeader:     "Microsoft-IIS/7.0",
+			AppName:          "Brucifer 2021.",
+			Views:            engine,
+		},
+	)
 
 	// println(db)
 
 	app.Use(recover.New())
 	app.Use(etag.New())
-	app.Use(logger.New(logger.Config{
-		Format: "[${time}] ${method} ${path}\t| ${status} ${latency}\t| ${ua}\t| ${ips} \n",
-	}))
-	app.Use(func(c *fiber.Ctx) error {
-		// start timer
-		start := time.Now()
-		// next routes
-		err := c.Next()
-		// stop timer
-		stop := time.Now()
-		// Do something with response
-		c.Append("Server-Timing", fmt.Sprintf("app;dur=%v", stop.Sub(start).String()))
-		// return stack error if exist
-		return err
-	})
+	app.Use(
+		logger.New(
+			logger.Config{
+				Format: "[${time}] ${method} ${path}\t| ${status} ${latency}\t| ${ua}\t| ${ips} \n",
+			},
+		),
+	)
+	app.Use(
+		func(c *fiber.Ctx) error {
+			// start timer
+			start := time.Now()
+			// next routes
+			err := c.Next()
+			// stop timer
+			stop := time.Now()
+			// Do something with response
+			c.Append("Server-Timing", fmt.Sprintf("app;dur=%v", stop.Sub(start).String()))
+			// return stack error if exist
+			return err
+		},
+	)
 
-	app.Use(helmet.New(helmet.Config{
-		ReferrerPolicy:        "no-referrer-when-downgrade",
-		ContentSecurityPolicy: "default-src 'self'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com",
-	}))
+	app.Use(
+		helmet.New(
+			helmet.Config{
+				ReferrerPolicy:        "no-referrer-when-downgrade",
+				ContentSecurityPolicy: "default-src 'self'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com",
+			},
+		),
+	)
 
-	app.Get("/favicon.ico", func(c *fiber.Ctx) error {
-		c.Type("ico")
+	app.Get(
+		"/favicon.ico",
+		func(c *fiber.Ctx) error {
+			c.Type("ico")
 
-		favicon, _ := assets.ReadFile("assets/images/favicon.ico")
+			favicon, _ := assets.ReadFile("assets/images/favicon.ico")
 
-		return c.Send(favicon)
-	})
+			return c.Send(favicon)
+		},
+	)
 
 	assetsFs, _ := fs.Sub(assets, "assets")
-	app.Use("/assets", filesystem.New(filesystem.Config{
-		Root: http.FS(assetsFs),
-	}))
+	app.Use(
+		"/assets",
+		filesystem.New(
+			filesystem.Config{
+				Root: http.FS(assetsFs),
+			},
+		),
+	)
 
 	routes.RegisterRoutes(app)
 

@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  web-main:
+    build:
+      context: .
+      dockerfile: .docker/web-main/Dockerfile.dev
+    volumes:
+      - .:/go/src/app
+
+  web-admin:
+    build:
+      context: ./admin-ui
+      dockerfile: ../.docker/web-admin/Dockerfile.dev
+    env_file:
+      - admin-ui/.env
+    environment:
+      - PORT=3000
+    volumes:
+      - ./admin-ui:/app
+
