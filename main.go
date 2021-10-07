@@ -94,6 +94,7 @@ func main() {
 			ServerHeader:     "Microsoft-IIS/7.0",
 			AppName:          "Brucifer 2021.",
 			Views:            engine,
+			Prefork:          true,
 		},
 	)
 
