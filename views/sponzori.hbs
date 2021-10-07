@@ -35,6 +35,36 @@
         border-radius: 18px;
         padding: 30px;
     }
+
+    @media screen and (max-width: 1400px) {
+        .sponsors {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+    }
+
+    @media screen and (max-width: 980px) {
+        .sponsors {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    @media screen and (max-width: 635px) {
+        .sponsors {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media screen and (max-width: 350px) {
+        .sponsors {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+    }
+    {{#each sponsors}}
+
+    .s{{@index}} {
+        background-image: url("{{ this.Src }}");
+    }
+    {{/each}}
 </style>
 
 <div class="sponsors">
@@ -42,7 +72,7 @@
         <div class="sponsor" title="{{ this.Name }}">
             <div class="image-container">
                 <div class="image-sizer"></div>
-                <div class="image-frame" style="background-image: url('{{ this.Src }}')"></div>
+                <div class="image-frame s{{ @index }}"></div>
             </div>
         </div>
     {{/each}}
