@@ -18,6 +18,7 @@ func RegisterRoutes(app *fiber.App) {
 	Base.Get("/ulaznice", base.Tickets)
 	Base.Get("/pravila", base.Rules)
 	Base.Get("/lineup", base.Lineup)
+	Base.Get("/sponzori", base.Sponsors)
 	Base.Get("/i/:id", image.ShowImage)
 
 	Api := app.Group(
