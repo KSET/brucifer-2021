@@ -12,9 +12,14 @@ func Success(data interface{}) fiber.Map {
 }
 
 func Error(message string, err error) fiber.Map {
+	data := ""
+	if err != nil {
+		data = err.Error()
+	}
+
 	return fiber.Map{
 		"status":  "error",
 		"message": message,
-		"data":    err.Error(),
+		"data":    data,
 	}
 }
