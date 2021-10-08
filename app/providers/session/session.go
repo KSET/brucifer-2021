@@ -34,8 +34,12 @@ func (p sessionProvider) Register() error {
 
 	session_ = session.New(
 		session.Config{
-			Storage:   storage,
-			KeyLookup: fmt.Sprintf("cookie:%s", p.CookieName()),
+			Storage: storage,
+			KeyLookup: fmt.Sprintf(
+				"%s:%s",
+				session.SourceCookie,
+				p.CookieName(),
+			),
 		},
 	)
 
