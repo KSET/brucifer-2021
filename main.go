@@ -12,10 +12,12 @@ import (
 
 	"github.com/joho/godotenv"
 
+	"brucosijada.kset.org/app/models"
 	"brucosijada.kset.org/app/providers/database"
 	"brucosijada.kset.org/app/providers/hash"
 	"brucosijada.kset.org/app/providers/minio"
 	"brucosijada.kset.org/app/providers/session"
+	"brucosijada.kset.org/app/repo"
 	"brucosijada.kset.org/app/routes"
 	"brucosijada.kset.org/app/util/async"
 
@@ -77,6 +79,31 @@ func main() {
 			return nil, minio.MinioProvider().Register()
 		},
 	).All()
+	if err != nil {
+		panic(err)
+	}
+
+	err = func() (err error) {
+		db := database.DatabaseProvider().Client()
+		var users int64
+		err = db.Model(models.User{}).Count(&users).Error
+		if err != nil {
+			return
+		}
+
+		if users == 0 {
+			_, err = repo.User().Create(
+				repo.UserCreateModel{
+					Email:      os.Getenv("INITIAL_USER_MAIL"),
+					Identity:   os.Getenv("INITIAL_USER_USER"),
+					Password:   os.Getenv("INITIAL_USER_PASS"),
+					Invitation: nil,
+				},
+			)
+		}
+
+		return
+	}()
 	if err != nil {
 		panic(err)
 	}
