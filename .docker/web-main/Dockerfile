@@ -24,4 +24,6 @@ WORKDIR /root/
 
 COPY --from=builder /go/src/app/bin/brucifer ./
 
+ENV PORT=3000
+
 CMD ["./brucifer"]

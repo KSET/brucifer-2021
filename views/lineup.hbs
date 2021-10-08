@@ -1,19 +1,126 @@
-<link rel="stylesheet" href="/assets/styles/page.image.css"/>
-<style>
-    :root {
-        --background-image: url("/assets/images/lineup/bg.svg");
-        --background-image-aspect-ratio: calc(715 / 1366);
-    }
-
-    @media screen and (max-width: 980px) {
+{{#unless hasArtists}}
+    <link rel="stylesheet" href="/assets/styles/page.image.css"/>
+    <style>
         :root {
-            --background-image: url("/assets/images/lineup/bg-mobile.svg");
-            --background-image-aspect-ratio: calc(640 / 358);
+            --background-image: url("/assets/images/lineup/bg.svg");
+            --background-image-aspect-ratio: calc(715 / 1366);
         }
-    }
-</style>
 
-<div class="image-container">
-    <div class="image-sizer"></div>
-    <div class="image-frame"></div>
-</div>
+        @media screen and (max-width: 980px) {
+            :root {
+                --background-image: url("/assets/images/lineup/bg-mobile.svg");
+                --background-image-aspect-ratio: calc(640 / 358);
+            }
+        }
+    </style>
+
+    <div class="image-container">
+        <div class="image-sizer"></div>
+        <div class="image-frame"></div>
+    </div>
+{{/unless}}
+{{#if hasArtists}}
+    <style>
+        .contents {
+            padding-top: 3.14159em;
+        }
+
+        .lineup {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-row-gap: 3.45rem;
+            grid-column-gap: 5.25rem;
+        }
+
+        .image-container {
+            position: relative;
+        }
+
+        .image-container .image-sizer {
+            padding-bottom: calc(0.86 * 100%);
+            transition: padding-bottom .3s ease;
+            will-change: padding-bottom;
+        }
+
+        .image-container .image-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+        }
+
+        .artist {
+            background: rgba(0, 0, 0, .3);
+            border-radius: 18px;
+            padding: 15px 30px;
+        }
+
+        .artist h3 {
+            text-align: center;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 2.25rem;
+            color: var(--bruc-white);
+            text-transform: uppercase;
+        }
+
+        @media screen and (max-width: 1400px) {
+            .lineup {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+
+            .artist h3 {
+                font-size: 1.85rem;
+            }
+        }
+
+        @media screen and (max-width: 980px) {
+            .lineup {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .artist h3 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media screen and (max-width: 635px) {
+            .lineup {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .artist h3 {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media screen and (max-width: 350px) {
+            .lineup {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+                grid-row-gap: 1.2rem;
+            }
+        }
+        {{#each artists}}
+
+        .s{{@index}} {
+            background-image: url({{ this.Src }});
+        }
+        {{/each}}
+    </style>
+
+    <div class="lineup">
+        {{#each artists}}
+            <div class="artist" title="{{ this.Name }}">
+                <div class="image-container">
+                    <div class="image-sizer"></div>
+                    <div class="image-frame s{{ @index }}"></div>
+                </div>
+                <h3>{{ this.Name }}</h3>
+            </div>
+        {{/each}}
+    </div>
+{{/if}}

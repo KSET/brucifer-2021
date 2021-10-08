@@ -10,8 +10,16 @@ import (
 	"strconv"
 	"time"
 
-	"brucosijada.kset.org/app/routes"
 	"github.com/joho/godotenv"
+
+	"brucosijada.kset.org/app/models"
+	"brucosijada.kset.org/app/providers/database"
+	"brucosijada.kset.org/app/providers/hash"
+	"brucosijada.kset.org/app/providers/minio"
+	"brucosijada.kset.org/app/providers/session"
+	"brucosijada.kset.org/app/repo"
+	"brucosijada.kset.org/app/routes"
+	"brucosijada.kset.org/app/util/async"
 
 	"brucosijada.kset.org/src/template/handlebars"
 
@@ -57,11 +65,48 @@ func main() {
 
 	flag.Parse()
 
-	// db, err := gorm.Open(postgres.Open(os.Getenv("DATABASE_URL")), &gorm.Config{})
-	//
-	// if err != nil {
-	// 	panic(err)
-	// }
+	_, err = async.Async().RunInParallel(
+		func() (interface{}, error) {
+			return nil, hash.HashProvider().CalibrateMemoryParam(time.Second)
+		},
+		func() (interface{}, error) {
+			return nil, database.DatabaseProvider().Register()
+		},
+		func() (interface{}, error) {
+			return nil, session.SessionProvider().Register()
+		},
+		func() (interface{}, error) {
+			return nil, minio.MinioProvider().Register()
+		},
+	).All()
+	if err != nil {
+		panic(err)
+	}
+
+	err = func() (err error) {
+		db := database.DatabaseProvider().Client()
+		var users int64
+		err = db.Model(models.User{}).Count(&users).Error
+		if err != nil {
+			return
+		}
+
+		if users == 0 {
+			_, err = repo.User().Create(
+				repo.UserCreateModel{
+					Email:      os.Getenv("INITIAL_USER_MAIL"),
+					Identity:   os.Getenv("INITIAL_USER_USER"),
+					Password:   os.Getenv("INITIAL_USER_PASS"),
+					Invitation: nil,
+				},
+			)
+		}
+
+		return
+	}()
+	if err != nil {
+		panic(err)
+	}
 
 	viewsFolder, _ := fs.Sub(views, "views")
 	engine := handlebars.NewFileSystem(
@@ -69,51 +114,78 @@ func main() {
 		".hbs",
 	)
 
-	app := fiber.New(fiber.Config{
-		DisableKeepalive: true,
-		ReadTimeout:      10 * time.Second,
-		ServerHeader:     "Microsoft-IIS/7.0",
-		AppName:          "Brucifer 2021.",
-		Views:            engine,
-	})
+	app := fiber.New(
+		fiber.Config{
+			DisableKeepalive: true,
+			ReadTimeout:      10 * time.Second,
+			ServerHeader:     "Microsoft-IIS/7.0",
+			AppName:          "Brucifer 2021.",
+			Views:            engine,
+			BodyLimit:        200 * 1024 * 1,
+			Prefork:          false,
+		},
+	)
 
 	// println(db)
 
 	app.Use(recover.New())
 	app.Use(etag.New())
-	app.Use(logger.New(logger.Config{
-		Format: "[${time}] ${method} ${path}\t| ${status} ${latency}\t| ${ua}\t| ${ips} \n",
-	}))
-	app.Use(func(c *fiber.Ctx) error {
-		// start timer
-		start := time.Now()
-		// next routes
-		err := c.Next()
-		// stop timer
-		stop := time.Now()
-		// Do something with response
-		c.Append("Server-Timing", fmt.Sprintf("app;dur=%v", stop.Sub(start).String()))
-		// return stack error if exist
-		return err
-	})
+	app.Use(
+		logger.New(
+			logger.Config{
+				Format: "[${time}] ${method} ${path}\t| ${status} ${latency}\t| ${ua}\t| ${ips} \n",
+			},
+		),
+	)
+	app.Use(
+		func(c *fiber.Ctx) error {
+			// start timer
+			start := time.Now()
+			// next routes
+			err := c.Next()
+			// stop timer
+			stop := time.Now()
+			// Do something with response
+			c.Append("Server-Timing", fmt.Sprintf("app;dur=%v", stop.Sub(start).String()))
+			// return stack error if exist
+			return err
+		},
+	)
 
-	app.Use(helmet.New(helmet.Config{
-		ReferrerPolicy:        "no-referrer-when-downgrade",
-		ContentSecurityPolicy: "default-src 'self'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com",
-	}))
+	app.Use(
+		helmet.New(
+			helmet.Config{
+				ReferrerPolicy:        "no-referrer-when-downgrade",
+				ContentSecurityPolicy: "default-src 'self'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com",
+			},
+		),
+	)
 
-	app.Get("/favicon.ico", func(c *fiber.Ctx) error {
-		c.Type("ico")
+	app.Get(
+		"/favicon.ico",
+		func(c *fiber.Ctx) error {
+			c.Type("ico")
+			c.Set("Cache-Control", fmt.Sprintf("public, max-age=%d", int((7*24*time.Hour).Seconds())))
 
-		favicon, _ := assets.ReadFile("assets/images/favicon.ico")
+			favicon, _ := assets.ReadFile("assets/images/favicon.ico")
 
-		return c.Send(favicon)
-	})
+			return c.Send(favicon)
+		},
+	)
 
 	assetsFs, _ := fs.Sub(assets, "assets")
-	app.Use("/assets", filesystem.New(filesystem.Config{
-		Root: http.FS(assetsFs),
-	}))
+	app.Use(
+		"/assets",
+		func(ctx *fiber.Ctx) error {
+			ctx.Set("Cache-Control", fmt.Sprintf("public, max-age=%d", int((365*24*time.Hour).Seconds())))
+			return ctx.Next()
+		},
+		filesystem.New(
+			filesystem.Config{
+				Root: http.FS(assetsFs),
+			},
+		),
+	)
 
 	routes.RegisterRoutes(app)
 
