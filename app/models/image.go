@@ -14,7 +14,7 @@ type Image struct {
 	Base
 	UploaderID uint             `json:"-"`
 	Uploader   User             `json:"uploader"`
-	Key        string           `json:"-"`
+	Key        string           `json:"-" gorm:"size:255"`
 	Variations []ImageVariation `json:"variations"`
 	OwnerID    uint             `json:"-"`
 	OwnerType  string           `json:"-"`
