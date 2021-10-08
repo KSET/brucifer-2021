@@ -137,6 +137,7 @@ func main() {
 		"/favicon.ico",
 		func(c *fiber.Ctx) error {
 			c.Type("ico")
+			c.Set("Cache-Control", fmt.Sprintf("public, max-age=%d", int((7*24*time.Hour).Seconds())))
 
 			favicon, _ := assets.ReadFile("assets/images/favicon.ico")
 
@@ -147,6 +148,10 @@ func main() {
 	assetsFs, _ := fs.Sub(assets, "assets")
 	app.Use(
 		"/assets",
+		func(ctx *fiber.Ctx) error {
+			ctx.Set("Cache-Control", fmt.Sprintf("public, max-age=%d", int((365*24*time.Hour).Seconds())))
+			return ctx.Next()
+		},
 		filesystem.New(
 			filesystem.Config{
 				Root: http.FS(assetsFs),
