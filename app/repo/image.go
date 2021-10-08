@@ -80,12 +80,23 @@ func (r imageRepo) Create(logo *multipart.FileHeader, uploaderId uint) (im *mode
 	tmpDir, err := ioutil.TempDir("", fmt.Sprintf("brucifer-%d-*", uploadTime))
 	defer os.RemoveAll(tmpDir)
 
-	variationDimensions := r.VariationDimensions()
-	fns := make([]func() (interface{}, error), len(variationDimensions))
-	for i, dim := range variationDimensions {
-		i, dim := i, dim
+	imageDimensions := img.Bounds().Max
+	originalRendered := false
 
-		fns[i] = func() (variation interface{}, err error) {
+	variationDimensions := r.VariationDimensions()
+	fns := make([]func() (interface{}, error), 0)
+	for _, dim := range variationDimensions {
+		dim := dim
+
+		if imageDimensions.X <= dim || imageDimensions.Y <= dim {
+			if originalRendered {
+				break
+			} else {
+				originalRendered = true
+			}
+		}
+
+		fn := func() (variation interface{}, err error) {
 			resizedImage := imaging.Fit(img, dim, dim, imaging.Lanczos)
 
 			imgPath := path.Join(tmpDir, fmt.Sprintf("%d.jpg", dim))
@@ -115,6 +126,8 @@ func (r imageRepo) Create(logo *multipart.FileHeader, uploaderId uint) (im *mode
 
 			return variation, err
 		}
+
+		fns = append(fns, fn)
 	}
 
 	variationsI, err := async.Async().RunInParallel(fns...).All()
