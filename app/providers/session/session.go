@@ -6,7 +6,6 @@ import (
 
 	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/storage/redis"
-	"github.com/google/uuid"
 )
 
 type sessionProvider struct {
@@ -37,11 +36,6 @@ func (p sessionProvider) Register() error {
 		session.Config{
 			Storage:   storage,
 			KeyLookup: fmt.Sprintf("cookie:%s", p.CookieName()),
-			KeyGenerator: func() string {
-				id, _ := uuid.NewUUID()
-
-				return fmt.Sprintf("brucifer:session:%s", id)
-			},
 		},
 	)
 
