@@ -20,6 +20,24 @@ export const mutations = {
 };
 
 export const actions = {
+  async fetchUser(
+    {
+      commit,
+    },
+  ) {
+    const response = await this.$api.$get(
+      "/auth/user",
+    );
+
+    const { data = null, status } = response || {};
+
+    if ("success" === status) {
+      await commit("SET_USER", data);
+    } else {
+      await commit("SET_USER", null);
+    }
+  },
+
   async login(
     {
       commit,
@@ -89,19 +107,9 @@ export const actions = {
 
   async nuxtServerInit(
     {
-      commit,
+      dispatch,
     },
   ) {
-    const response = await this.$api.$get(
-      "/auth/user",
-    );
-
-    const { data = null, status } = response || {};
-
-    if ("success" === status) {
-      await commit("SET_USER", data);
-    } else {
-      await commit("SET_USER", null);
-    }
+    await dispatch("fetchUser");
   },
 };

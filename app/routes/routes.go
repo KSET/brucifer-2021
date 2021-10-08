@@ -53,6 +53,7 @@ func RegisterRoutes(app *fiber.App) {
 
 	ApiUser := Api.Group("/user")
 	ApiUser.Get("/", middleware.RequireAuth(), user.ListUsers)
+	ApiUser.Patch("/", middleware.RequireAuth(), user.ChangePassword)
 
 	ApiUserInvitation := Api.Group("/user-invitation")
 	ApiUserInvitation.Get("/info/:code", user.InvitationInfo)

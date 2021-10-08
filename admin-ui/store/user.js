@@ -32,4 +32,34 @@ export const actions = {
 
     return response;
   },
+
+  async changePassword(
+    {
+      dispatch,
+    },
+    {
+      oldPassword,
+      newPassword,
+    },
+  ) {
+    const response = await this.$api.$patch(
+      "/user/",
+      {
+        password: {
+          old: oldPassword,
+          new: newPassword,
+        },
+      },
+    );
+
+    await dispatch(
+      "auth/fetchUser",
+      null,
+      {
+        root: true,
+      },
+    );
+
+    return response;
+  },
 };

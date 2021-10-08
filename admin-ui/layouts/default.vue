@@ -62,6 +62,20 @@
                 Logout
               </v-list-item-title>
             </v-list-item>
+
+            <v-list-item
+              exact
+              nuxt
+              :to="{ name: 'PageUserChangePassword' }"
+            >
+              <v-list-item-icon>
+                <v-icon>mdi-lock</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>
+                Change password
+              </v-list-item-title>
+            </v-list-item>
           </v-list-group>
 
           <v-list-group
