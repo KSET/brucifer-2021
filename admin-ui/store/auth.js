@@ -74,9 +74,9 @@ export const actions = {
       "/auth/user",
     );
 
-    const { data = null } = response || {};
+    const { data = null, status } = response || {};
 
-    if (data?.username) {
+    if ("success" === status) {
       await commit("SET_USER", data);
     } else {
       await commit("SET_USER", null);
