@@ -99,7 +99,7 @@ func (r imageRepo) Create(logo *multipart.FileHeader, uploaderId uint) (im *mode
 		fn := func() (variation interface{}, err error) {
 			resizedImage := imaging.Fit(img, dim, dim, imaging.Lanczos)
 
-			imgPath := path.Join(tmpDir, fmt.Sprintf("%d.jpg", dim))
+			imgPath := path.Join(tmpDir, fmt.Sprintf("%d.%s", dim, kind.Extension))
 			if err := imaging.Save(resizedImage, imgPath); err != nil {
 				return nil, err
 			}
