@@ -2,7 +2,6 @@
   <v-app dark>
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant="miniVariant"
       app
       clipped
       fixed
@@ -175,13 +174,6 @@
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
 
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${ miniVariant ? "right" : "left" }` }}</v-icon>
-      </v-btn>
-
       <v-toolbar-title>
         <a href="/">Brucošijada</a>
       </v-toolbar-title>
@@ -208,7 +200,6 @@
 
     data: () => ({
       drawer: false,
-      miniVariant: false,
     }),
 
     computed: {
