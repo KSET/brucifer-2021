@@ -33,7 +33,7 @@ export const actions = {
   ) {
     const data = new FormData();
     data.set("name", name);
-    data.set("logo", logo);
+    data.set("image", logo);
 
     const response = await this.$api.$post(
       "/artist",
@@ -54,7 +54,7 @@ export const actions = {
     const data = new FormData();
     data.set("name", name);
     if (logo) {
-      data.set("logo", logo);
+      data.set("image", logo);
     }
 
     const response = await this.$api.$patch(
