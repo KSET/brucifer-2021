@@ -65,17 +65,21 @@ export const actions = {
     await commit("SET_USER", null);
   },
 
-    async nuxtServerInit(
-      {
-        commit,
-      },
-    ) {
-      const response = await this.$api.$get(
-        "/auth/user",
-      );
-
-      const { data = {} } = response || {};
-
-      await commit("SET_USER", data);
+  async nuxtServerInit(
+    {
+      commit,
     },
+  ) {
+    const response = await this.$api.$get(
+      "/auth/user",
+    );
+
+    const { data = null } = response || {};
+
+    if (data?.username) {
+      await commit("SET_USER", data);
+    } else {
+      await commit("SET_USER", null);
+    }
+  },
 };
