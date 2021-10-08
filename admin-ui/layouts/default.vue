@@ -118,7 +118,7 @@
               nuxt
             >
               <v-list-item-icon>
-                <v-icon>mdi-view-list</v-icon>
+                <v-icon>mdi-account-multiple</v-icon>
               </v-list-item-icon>
 
               <v-list-item-title>
@@ -132,11 +132,35 @@
               nuxt
             >
               <v-list-item-icon>
-                <v-icon>mdi-playlist-plus</v-icon>
+                <v-icon>mdi-account-plus</v-icon>
               </v-list-item-icon>
 
               <v-list-item-title>
                 Create
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+
+          <v-list-group
+            key="users"
+            no-action
+            prepend-icon="mdi-account-multiple"
+          >
+            <template #activator>
+              <v-list-item-title>Users</v-list-item-title>
+            </template>
+
+            <v-list-item
+              :to="{ name: 'PageUsersList' }"
+              exact
+              nuxt
+            >
+              <v-list-item-icon>
+                <v-icon>mdi-view-list</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>
+                List
               </v-list-item-title>
             </v-list-item>
           </v-list-group>

@@ -9,6 +9,7 @@ import (
 	"brucosijada.kset.org/app/routes/api/auth"
 	"brucosijada.kset.org/app/routes/api/image"
 	"brucosijada.kset.org/app/routes/api/sponsor"
+	"brucosijada.kset.org/app/routes/api/user"
 	"brucosijada.kset.org/app/routes/base"
 )
 
@@ -33,6 +34,7 @@ func RegisterRoutes(app *fiber.App) {
 	ApiAuth := Api.Group("/auth")
 	ApiAuth.Post("/login", auth.Login)
 	ApiAuth.Post("/logout", auth.Logout)
+	ApiAuth.Post("/register", auth.Register)
 	ApiAuth.Get("/user", middleware.RequireAuth(), auth.GetUser)
 
 	ApiSponsor := Api.Group("/sponsor")
@@ -48,6 +50,15 @@ func RegisterRoutes(app *fiber.App) {
 	ApiArtist.Get("/", artist.ListArtists)
 	ApiArtist.Get("/:id", middleware.RequireAuth(), artist.ShowArtist)
 	ApiArtist.Patch("/:id", middleware.RequireAuth(), artist.UpdateArtist)
+
+	ApiUser := Api.Group("/user")
+	ApiUser.Get("/", middleware.RequireAuth(), user.ListUsers)
+
+	ApiUserInvitation := Api.Group("/user-invitation")
+	ApiUserInvitation.Get("/info/:code", user.InvitationInfo)
+	ApiUserInvitation.Get("/", middleware.RequireAuth(), user.ListInvitations)
+	ApiUserInvitation.Post("/", middleware.RequireAuth(), user.CreateInvitation)
+	ApiUserInvitation.Delete("/:id", middleware.RequireAuth(), user.DeleteInvitation)
 
 	Base.Use(
 		func(c *fiber.Ctx) error {

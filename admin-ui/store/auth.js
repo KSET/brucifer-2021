@@ -50,6 +50,28 @@ export const actions = {
     }
   },
 
+  async register(
+    _,
+    {
+      email,
+      username,
+      password,
+      token,
+    },
+  ) {
+    const response = await this.$api.$post(
+      "/auth/register",
+      {
+        email,
+        identity: username,
+        password,
+        code: token,
+      },
+    );
+
+    return response;
+  },
+
   async logout(
     {
       commit,
