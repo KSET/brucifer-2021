@@ -21,6 +21,15 @@ func (u userRepo) GetByUsername(username string) models.User {
 	return user
 }
 
+func (u userRepo) GetByIdentity(identity string) models.User {
+	db := database.DatabaseProvider().Client()
+
+	var user models.User
+	db.Where("username = ? or email = ?", identity, identity).First(&user)
+
+	return user
+}
+
 func (u userRepo) GetById(id uint) models.User {
 	db := database.DatabaseProvider().Client()
 

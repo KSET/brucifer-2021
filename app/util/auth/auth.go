@@ -43,7 +43,7 @@ func (a authUtil) IsAuthenticated(ctx *fiber.Ctx) (authenticated bool) {
 }
 
 func (a authUtil) ValidateUser(identity string, password string) *models.User {
-	user := repo.User().GetByUsername(identity)
+	user := repo.User().GetByIdentity(identity)
 	emptyPassword := hash.HashProvider().EmptyPassword()
 
 	if user.Password == "" {
