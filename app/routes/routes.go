@@ -5,6 +5,7 @@ import (
 
 	"brucosijada.kset.org/app/middleware"
 	"brucosijada.kset.org/app/response"
+	"brucosijada.kset.org/app/routes/api/artist"
 	"brucosijada.kset.org/app/routes/api/auth"
 	"brucosijada.kset.org/app/routes/api/image"
 	"brucosijada.kset.org/app/routes/api/sponsor"
@@ -39,6 +40,14 @@ func RegisterRoutes(app *fiber.App) {
 	ApiSponsor.Patch("/swap/:id", middleware.RequireAuth(), sponsor.SwapSponsors)
 	ApiSponsor.Delete("/:id", middleware.RequireAuth(), sponsor.DeleteSponsor)
 	ApiSponsor.Get("/", sponsor.ListSponsors)
+
+	ApiArtist := Api.Group("/artist")
+	ApiArtist.Post("/", middleware.RequireAuth(), artist.CreateArtist)
+	ApiArtist.Patch("/swap/:id", middleware.RequireAuth(), artist.SwapArtists)
+	ApiArtist.Delete("/:id", middleware.RequireAuth(), artist.DeleteArtist)
+	ApiArtist.Get("/", artist.ListArtists)
+	ApiArtist.Get("/:id", middleware.RequireAuth(), artist.ShowArtist)
+	ApiArtist.Patch("/:id", middleware.RequireAuth(), artist.UpdateArtist)
 
 	Base.Use(
 		func(c *fiber.Ctx) error {

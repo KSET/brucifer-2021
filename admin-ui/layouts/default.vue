@@ -102,6 +102,44 @@
               </v-list-item-title>
             </v-list-item>
           </v-list-group>
+
+          <v-list-group
+            key="artists"
+            no-action
+            prepend-icon="mdi-account-music"
+          >
+            <template #activator>
+              <v-list-item-title>Artists</v-list-item-title>
+            </template>
+
+            <v-list-item
+              :to="{ name: 'PageArtistsList' }"
+              exact
+              nuxt
+            >
+              <v-list-item-icon>
+                <v-icon>mdi-view-list</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>
+                List
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item
+              :to="{ name: 'PageArtistsCreate' }"
+              exact
+              nuxt
+            >
+              <v-list-item-icon>
+                <v-icon>mdi-playlist-plus</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>
+                Create
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
         </transition-group>
       </v-list>
     </v-navigation-drawer>

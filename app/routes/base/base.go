@@ -39,9 +39,39 @@ func Rules(c *fiber.Ctx) error {
 }
 
 func Lineup(c *fiber.Ctx) error {
+	artistList, err := repo.Artist().ListSimple()
+
+	if err != nil {
+		return err
+	}
+
+	type artist struct {
+		Name string
+		Src  string
+	}
+
+	artists := make([]artist, len(*artistList))
+	for i, item := range *artistList {
+		src := repo.ArtistItemLogo{}
+		for _, logo := range item.Logo {
+			if src.Width < logo.Width {
+				logo := logo
+				src = logo
+			}
+		}
+
+		artists[i] = artist{
+			Name: item.Name,
+			Src:  src.Url,
+		}
+	}
+
 	return c.Render(
 		"lineup",
-		fiber.Map{},
+		fiber.Map{
+			"artists":    artists,
+			"hasArtists": len(artists) > 0,
+		},
 		"layouts/main",
 	)
 }

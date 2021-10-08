@@ -15,6 +15,7 @@ require (
 	github.com/mailgun/raymond v2.0.2+incompatible
 	github.com/minio/minio-go/v7 v7.0.14
 	github.com/spf13/pflag v1.0.5
+	github.com/valyala/fasthttp v1.29.0
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
 	gorm.io/driver/postgres v1.1.2
 	gorm.io/gorm v1.21.15

@@ -61,6 +61,7 @@ func (p databaseProvider) Register() (err error) {
 		&models.ImageVariation{},
 		&models.Sponsor{},
 		&models.User{},
+		&models.Artist{},
 	)
 	if err != nil {
 		return err
