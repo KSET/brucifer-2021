@@ -24,7 +24,7 @@
             icon
             @click.prevent="moveLeft(artist)"
           >
-            &larr;
+            <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
 
           <v-spacer />
@@ -55,7 +55,7 @@
             icon
             @click.prevent="moveRight(artist)"
           >
-            &rarr;
+            <v-icon>mdi-arrow-right</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>

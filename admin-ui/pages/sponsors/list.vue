@@ -24,7 +24,7 @@
             icon
             @click.prevent="moveLeft(sponsor)"
           >
-            &larr;
+            <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
 
           <v-spacer />
@@ -56,7 +56,7 @@
             icon
             @click.prevent="moveRight(sponsor)"
           >
-            &rarr;
+            <v-icon>mdi-arrow-right</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>
