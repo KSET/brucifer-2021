@@ -60,6 +60,35 @@ func (r sponsorRepo) Create(name string, logo *multipart.FileHeader, uploaderId 
 	return sponsor, err
 }
 
+func (r sponsorRepo) Update(oldSponsor *models.Sponsor, name string, logo *multipart.FileHeader, uploaderId uint) error {
+	db := database.DatabaseProvider().Client()
+
+	return db.Transaction(
+		func(tx *gorm.DB) (err error) {
+			if logo != nil {
+				if err = tx.Delete(&oldSponsor.Image).Error; err != nil {
+					return
+				}
+
+				var image *models.Image
+				if image, err = Image().Create(logo, uploaderId); err != nil {
+					return
+				}
+
+				oldSponsor.Image = *image
+			}
+
+			if err != nil {
+				return
+			}
+
+			oldSponsor.Name = name
+
+			return tx.Save(oldSponsor).Error
+		},
+	)
+}
+
 func (r sponsorRepo) ListSimple() (*[]SponsorItem, error) {
 	var sponsors []*models.Sponsor
 	err := database.DatabaseProvider().Client().Order("\"order\" ASC").Preload("Image.Variations").Find(&sponsors).Error
@@ -85,6 +114,31 @@ func (r sponsorRepo) ListSimple() (*[]SponsorItem, error) {
 	}
 
 	return &items, nil
+}
+
+func (r sponsorRepo) GetByUuidSimple(id uuid.UUID) (sponsorItem *SponsorItem, err error) {
+	var sponsor models.Sponsor
+	q := database.DatabaseProvider().Client().Where(
+		"uuid = ?",
+		id.String(),
+	).Order(
+		"\"order\" ASC",
+	).Preload(
+		"Image.Variations",
+	).Find(&sponsor)
+
+	err = q.Error
+	if err != nil {
+		return
+	}
+
+	if q.RowsAffected == 0 {
+		err = errors.New("Item not found")
+		return
+	}
+
+	sponsorItem = r.ToSponsorItem(&sponsor)
+	return
 }
 
 func (r sponsorRepo) Swap(swap, with uuid.UUID) error {
@@ -124,4 +178,20 @@ func (r sponsorRepo) Swap(swap, with uuid.UUID) error {
 	)
 
 	return err
+}
+
+func (r sponsorRepo) ToSponsorItem(model *models.Sponsor) (item *SponsorItem) {
+	logos := make([]SponsorItemLogo, len(model.Image.Variations))
+	for i, variation := range model.Image.Variations {
+		logos[i] = SponsorItemLogo{
+			Width: variation.Width,
+			Url:   fmt.Sprintf("/i/%s", variation.UUID.String()),
+		}
+	}
+
+	return &SponsorItem{
+		Id:   model.UUID,
+		Name: model.Name,
+		Logo: logos,
+	}
 }

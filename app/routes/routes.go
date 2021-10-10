@@ -42,6 +42,8 @@ func RegisterRoutes(app *fiber.App) {
 	ApiSponsor.Patch("/swap/:id", middleware.RequireAuth(), sponsor.SwapSponsors)
 	ApiSponsor.Delete("/:id", middleware.RequireAuth(), sponsor.DeleteSponsor)
 	ApiSponsor.Get("/", sponsor.ListSponsors)
+	ApiSponsor.Get("/:id", middleware.RequireAuth(), sponsor.ShowSponsor)
+	ApiSponsor.Patch("/:id", middleware.RequireAuth(), sponsor.UpdateSponsor)
 
 	ApiArtist := Api.Group("/artist")
 	ApiArtist.Post("/", middleware.RequireAuth(), artist.CreateArtist)

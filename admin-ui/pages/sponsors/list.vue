@@ -38,6 +38,16 @@
             <v-icon>mdi-delete</v-icon>
           </v-btn>
 
+          <v-btn
+            :loading="loading"
+            color="warning"
+            icon
+            nuxt
+            :to="{ name: 'PageSponsorsEdit', params: { id: sponsor.id } }"
+          >
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+
           <v-spacer />
 
           <v-btn
