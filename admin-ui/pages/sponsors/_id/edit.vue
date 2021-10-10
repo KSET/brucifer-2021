@@ -29,6 +29,18 @@
           <v-col
             cols="12"
           >
+            <v-text-field
+              v-model="form.inputs.link"
+              :rules="form.rules.link"
+              label="URL"
+              required
+              type="url"
+            />
+          </v-col>
+
+          <v-col
+            cols="12"
+          >
             <v-file-input
               v-model="form.inputs.logo"
               :loading="logo.loading"
@@ -43,7 +55,7 @@
 
         <v-expand-transition>
           <v-row v-if="logo.src">
-            <v-col cols="1" md="4" lg="3">
+            <v-col cols="1" lg="3" md="4">
               <v-card>
                 <v-img
                   :src="logo.src"
@@ -97,11 +109,15 @@ name: PageSponsorsEdit
           valid: false,
           inputs: {
             name: String(sponsor.name),
+            link: String(sponsor.link || ""),
             logo: null,
           },
           rules: {
             username: [
               (v) => !!v || "Name required",
+            ],
+            link: [
+              (v) => !!v || "Link required",
             ],
             logo: [],
           },

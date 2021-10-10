@@ -17,6 +17,15 @@
 
         <v-card-title v-text="sponsor.name" />
 
+        <v-card-subtitle>
+          <a
+            :href="sponsor.url"
+            rel="nofollow noreferrer noopener external"
+            target="_blank"
+            v-text="sponsor.url"
+          />
+        </v-card-subtitle>
+
         <v-card-actions>
           <v-btn
             :disabled="i === 0"
@@ -40,10 +49,10 @@
 
           <v-btn
             :loading="loading"
+            :to="{ name: 'PageSponsorsEdit', params: { id: sponsor.id } }"
             color="warning"
             icon
             nuxt
-            :to="{ name: 'PageSponsorsEdit', params: { id: sponsor.id } }"
           >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>

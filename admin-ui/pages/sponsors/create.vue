@@ -29,6 +29,18 @@
           <v-col
             cols="12"
           >
+            <v-text-field
+              v-model="form.inputs.link"
+              :rules="form.rules.link"
+              label="URL"
+              type="url"
+              required
+            />
+          </v-col>
+
+          <v-col
+            cols="12"
+          >
             <v-file-input
               v-model="form.inputs.logo"
               :loading="logo.loading"
@@ -93,11 +105,15 @@ name: PageSponsorsCreate
         valid: false,
         inputs: {
           name: "",
+          link: "",
           logo: null,
         },
         rules: {
           username: [
             (v) => !!v || "Name required",
+          ],
+          link: [
+            (v) => !!v || "Link required",
           ],
           logo: [
             (v) => !!v || "Logo required",

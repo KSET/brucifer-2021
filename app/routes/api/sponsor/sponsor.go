@@ -16,6 +16,7 @@ import (
 func CreateSponsor(ctx *fiber.Ctx) (err error) {
 	type form struct {
 		Name string
+		Link string
 	}
 
 	var input form
@@ -41,6 +42,7 @@ func CreateSponsor(ctx *fiber.Ctx) (err error) {
 	sponsor, err := repo.Sponsor().Create(
 		repo.SponsorCreateOptions{
 			Name:     input.Name,
+			Link:     input.Link,
 			Logo:     logo,
 			Uploader: ctx.Locals("user").(models.User),
 		},
@@ -83,6 +85,7 @@ func ListSponsors(ctx *fiber.Ctx) error {
 func UpdateSponsor(ctx *fiber.Ctx) (err error) {
 	type form struct {
 		Name string
+		Link string
 	}
 
 	db := database.DatabaseProvider().Client()
@@ -126,6 +129,7 @@ func UpdateSponsor(ctx *fiber.Ctx) (err error) {
 		repo.SponsorUpdateOptions{
 			Model:    &sponsor,
 			Name:     input.Name,
+			Link:     input.Link,
 			Logo:     logo,
 			Uploader: ctx.Locals("user").(models.User),
 		},

@@ -28,11 +28,13 @@ export const actions = {
     _,
     {
       name,
+      link,
       logo,
     },
   ) {
     const data = new FormData();
     data.set("name", name);
+    data.set("link", link);
     data.set("logo", logo);
 
     const response = await this.$api.$post(
@@ -48,11 +50,13 @@ export const actions = {
     {
       id,
       name,
+      link,
       logo,
     },
   ) {
     const data = new FormData();
     data.set("name", name);
+    data.set("link", link);
     if (logo) {
       data.set("image", logo);
     }

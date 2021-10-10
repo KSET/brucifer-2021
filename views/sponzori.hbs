@@ -69,11 +69,11 @@
 
 <div class="sponsors">
     {{#each sponsors}}
-        <div class="sponsor" title="{{ this.Name }}">
+        <a href="{{ this.Url }}" rel="nofollow referrer noopener external" target="_blank" referrerpolicy="origin" class="sponsor" title="{{ this.Name }}">
             <div class="image-container">
                 <div class="image-sizer"></div>
                 <div class="image-frame s{{ @index }}"></div>
             </div>
-        </div>
+        </a>
     {{/each}}
 </div>

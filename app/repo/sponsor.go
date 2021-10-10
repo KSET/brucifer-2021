@@ -17,6 +17,7 @@ type sponsorRepo struct {
 
 type SponsorCreateOptions struct {
 	Name     string
+	Link     string
 	Logo     *multipart.FileHeader
 	Uploader models.User
 }
@@ -24,6 +25,7 @@ type SponsorCreateOptions struct {
 type SponsorUpdateOptions struct {
 	Model    *models.Sponsor
 	Name     string
+	Link     string
 	Logo     *multipart.FileHeader
 	Uploader models.User
 }
@@ -36,6 +38,7 @@ type SponsorItemLogo struct {
 type SponsorItem struct {
 	Id   uuid.UUID         `json:"id"`
 	Name string            `json:"name"`
+	Url  string            `json:"url"`
 	Logo []SponsorItemLogo `json:"logo"`
 }
 
@@ -67,6 +70,7 @@ func (r sponsorRepo) Create(data SponsorCreateOptions) (
 
 			sponsor = &models.Sponsor{
 				Name:  data.Name,
+				Link:  data.Link,
 				Image: *image,
 				Order: orderSponsor.Order + 1,
 			}
@@ -106,6 +110,7 @@ func (r sponsorRepo) Update(data SponsorUpdateOptions) error {
 			}
 
 			data.Model.Name = data.Name
+			data.Model.Link = data.Link
 
 			return tx.Save(data.Model).Error
 		},
@@ -132,6 +137,7 @@ func (r sponsorRepo) ListSimple() (*[]SponsorItem, error) {
 		items[i] = SponsorItem{
 			Id:   sponsor.UUID,
 			Name: sponsor.Name,
+			Url:  sponsor.Link,
 			Logo: logos,
 		}
 	}
@@ -215,6 +221,7 @@ func (r sponsorRepo) ToSponsorItem(model *models.Sponsor) (item *SponsorItem) {
 	return &SponsorItem{
 		Id:   model.UUID,
 		Name: model.Name,
+		Url:  model.Link,
 		Logo: logos,
 	}
 }

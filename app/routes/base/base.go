@@ -86,6 +86,7 @@ func Sponsors(c *fiber.Ctx) error {
 	type sponsor struct {
 		Name string
 		Src  string
+		Url  string
 	}
 
 	sponsors := make([]sponsor, len(*sponsorList))
@@ -101,6 +102,7 @@ func Sponsors(c *fiber.Ctx) error {
 		sponsors[i] = sponsor{
 			Name: item.Name,
 			Src:  src.Url,
+			Url:  item.Url,
 		}
 	}
 
