@@ -56,9 +56,11 @@ export const actions = {
         },
       );
 
-      const { data = {} } = response || {};
+      const { status = "error", data = {} } = response || {};
 
-      await commit("SET_USER", data);
+      if ("success" === status) {
+        await commit("SET_USER", data);
+      }
 
       return response;
     } catch (e) {
