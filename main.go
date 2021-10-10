@@ -93,7 +93,7 @@ func main() {
 
 		if users == 0 {
 			_, err = repo.User().Create(
-				repo.UserCreateModel{
+				repo.UserCreateOptions{
 					Email:      os.Getenv("INITIAL_USER_MAIL"),
 					Identity:   os.Getenv("INITIAL_USER_USER"),
 					Password:   os.Getenv("INITIAL_USER_PASS"),
