@@ -33,8 +33,8 @@
               v-model="form.inputs.link"
               :rules="form.rules.link"
               label="URL"
-              type="url"
               required
+              type="url"
             />
           </v-col>
 
@@ -55,7 +55,12 @@
 
         <v-expand-transition>
           <v-row v-if="logo.src">
-            <v-col cols="1" md="4" lg="3">
+            <v-col
+              cols="12"
+              lg="3"
+              md="4"
+              sm="6"
+            >
               <v-card>
                 <v-img
                   :src="logo.src"

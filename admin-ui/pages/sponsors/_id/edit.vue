@@ -55,7 +55,12 @@
 
         <v-expand-transition>
           <v-row v-if="logo.src">
-            <v-col cols="1" lg="3" md="4">
+            <v-col
+              cols="12"
+              sm="6"
+              lg="3"
+              md="4"
+            >
               <v-card>
                 <v-img
                   :src="logo.src"

@@ -3,7 +3,8 @@
     <v-col
       v-for="(artist, i) in artists"
       :key="artist.id"
-      cols="1"
+      cols="12"
+      sm="6"
       lg="3"
       md="4"
     >
@@ -40,9 +41,9 @@
 
           <v-btn
             :loading="loading"
+            :to="{ name: 'PageArtistsEdit', params: { id: artist.id } }"
             color="warning"
             icon
-            :to="{ name: 'PageArtistsEdit', params: { id: artist.id } }"
           >
             <v-icon>mdi-pencil</v-icon>
           </v-btn>

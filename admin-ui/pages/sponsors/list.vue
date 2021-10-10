@@ -3,7 +3,8 @@
     <v-col
       v-for="(sponsor, i) in sponsors"
       :key="sponsor.id"
-      cols="1"
+      cols="12"
+      sm="6"
       lg="3"
       md="4"
     >
