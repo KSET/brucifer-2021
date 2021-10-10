@@ -107,6 +107,7 @@ server/redeploy: $pull server/rebuild
 docker/build:
 	$(DOCKER_COMPOSE) \
 			build \
+			--parallel \
     		--compress \
     		--pull
 
@@ -115,8 +116,7 @@ docker/up:
 	$(DOCKER_COMPOSE) \
 		up \
 		--detach \
-		--remove-orphans \
-		--build
+		--remove-orphans
 
 .PHONY: docker/down
 docker/down:
