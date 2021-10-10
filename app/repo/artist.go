@@ -15,6 +15,19 @@ import (
 type artistRepo struct {
 }
 
+type ArtistCreateOptions struct {
+	Name     string
+	Logo     *multipart.FileHeader
+	Uploader models.User
+}
+
+type ArtistUpdateOptions struct {
+	Model    *models.Artist
+	Name     string
+	Logo     *multipart.FileHeader
+	Uploader models.User
+}
+
 type ArtistItemLogo struct {
 	Width uint   `json:"width"`
 	Url   string `json:"url"`
@@ -30,11 +43,16 @@ func Artist() artistRepo {
 	return artistRepo{}
 }
 
-func (r artistRepo) Create(name string, logo *multipart.FileHeader, uploaderId uint) (
+func (r artistRepo) Create(data ArtistCreateOptions) (
 	artist *models.Artist,
 	err error,
 ) {
-	image, err := Image().Create(logo, uploaderId)
+	image, err := Image().Create(
+		ImageCreateOptions{
+			File:     data.Logo,
+			Uploader: data.Uploader,
+		},
+	)
 
 	if err != nil {
 		return nil, err
@@ -48,7 +66,7 @@ func (r artistRepo) Create(name string, logo *multipart.FileHeader, uploaderId u
 			tx.Order("\"order\" desc").First(&orderArtist)
 
 			artist = &models.Artist{
-				Name:  name,
+				Name:  data.Name,
 				Image: *image,
 				Order: orderArtist.Order + 1,
 			}
@@ -60,31 +78,36 @@ func (r artistRepo) Create(name string, logo *multipart.FileHeader, uploaderId u
 	return artist, err
 }
 
-func (r artistRepo) Update(oldArtist *models.Artist, name string, logo *multipart.FileHeader, uploaderId uint) error {
+func (r artistRepo) Update(data ArtistUpdateOptions) error {
 	db := database.DatabaseProvider().Client()
 
 	return db.Transaction(
 		func(tx *gorm.DB) (err error) {
-			if logo != nil {
-				if err = tx.Delete(&oldArtist.Image).Error; err != nil {
+			if data.Logo != nil {
+				if err = tx.Delete(&data.Logo).Error; err != nil {
 					return
 				}
 
 				var image *models.Image
-				if image, err = Image().Create(logo, uploaderId); err != nil {
+				if image, err = Image().Create(
+					ImageCreateOptions{
+						File:     data.Logo,
+						Uploader: data.Uploader,
+					},
+				); err != nil {
 					return
 				}
 
-				oldArtist.Image = *image
+				data.Model.Image = *image
 			}
 
 			if err != nil {
 				return
 			}
 
-			oldArtist.Name = name
+			data.Model.Name = data.Name
 
-			return tx.Save(oldArtist).Error
+			return tx.Save(data.Model).Error
 		},
 	)
 }

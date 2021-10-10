@@ -39,9 +39,11 @@ func CreateSponsor(ctx *fiber.Ctx) (err error) {
 	}
 
 	sponsor, err := repo.Sponsor().Create(
-		input.Name,
-		logo,
-		ctx.Locals("user").(models.User).ID,
+		repo.SponsorCreateOptions{
+			Name:     input.Name,
+			Logo:     logo,
+			Uploader: ctx.Locals("user").(models.User),
+		},
 	)
 
 	if err != nil {
@@ -121,10 +123,12 @@ func UpdateSponsor(ctx *fiber.Ctx) (err error) {
 	}
 
 	err = repo.Sponsor().Update(
-		&sponsor,
-		input.Name,
-		logo,
-		ctx.Locals("user").(models.User).ID,
+		repo.SponsorUpdateOptions{
+			Model:    &sponsor,
+			Name:     input.Name,
+			Logo:     logo,
+			Uploader: ctx.Locals("user").(models.User),
+		},
 	)
 
 	if err != nil {

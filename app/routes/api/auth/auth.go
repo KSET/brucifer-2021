@@ -124,7 +124,7 @@ func Register(ctx *fiber.Ctx) error {
 	}
 
 	user, err := repo.User().Create(
-		repo.UserCreateModel{
+		repo.UserCreateOptions{
 			Email:      input.Email,
 			Identity:   input.Identity,
 			Password:   input.Password,

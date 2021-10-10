@@ -15,6 +15,19 @@ import (
 type sponsorRepo struct {
 }
 
+type SponsorCreateOptions struct {
+	Name     string
+	Logo     *multipart.FileHeader
+	Uploader models.User
+}
+
+type SponsorUpdateOptions struct {
+	Model    *models.Sponsor
+	Name     string
+	Logo     *multipart.FileHeader
+	Uploader models.User
+}
+
 type SponsorItemLogo struct {
 	Width uint   `json:"width"`
 	Url   string `json:"url"`
@@ -30,11 +43,16 @@ func Sponsor() sponsorRepo {
 	return sponsorRepo{}
 }
 
-func (r sponsorRepo) Create(name string, logo *multipart.FileHeader, uploaderId uint) (
+func (r sponsorRepo) Create(data SponsorCreateOptions) (
 	sponsor *models.Sponsor,
 	err error,
 ) {
-	image, err := Image().Create(logo, uploaderId)
+	image, err := Image().Create(
+		ImageCreateOptions{
+			File:     data.Logo,
+			Uploader: data.Uploader,
+		},
+	)
 
 	if err != nil {
 		return nil, err
@@ -48,7 +66,7 @@ func (r sponsorRepo) Create(name string, logo *multipart.FileHeader, uploaderId 
 			tx.Order("\"order\" desc").First(&orderSponsor)
 
 			sponsor = &models.Sponsor{
-				Name:  name,
+				Name:  data.Name,
 				Image: *image,
 				Order: orderSponsor.Order + 1,
 			}
@@ -60,31 +78,36 @@ func (r sponsorRepo) Create(name string, logo *multipart.FileHeader, uploaderId 
 	return sponsor, err
 }
 
-func (r sponsorRepo) Update(oldSponsor *models.Sponsor, name string, logo *multipart.FileHeader, uploaderId uint) error {
+func (r sponsorRepo) Update(data SponsorUpdateOptions) error {
 	db := database.DatabaseProvider().Client()
 
 	return db.Transaction(
 		func(tx *gorm.DB) (err error) {
-			if logo != nil {
-				if err = tx.Delete(&oldSponsor.Image).Error; err != nil {
+			if data.Logo != nil {
+				if err = tx.Delete(&data.Model.Image).Error; err != nil {
 					return
 				}
 
 				var image *models.Image
-				if image, err = Image().Create(logo, uploaderId); err != nil {
+				if image, err = Image().Create(
+					ImageCreateOptions{
+						File:     data.Logo,
+						Uploader: data.Uploader,
+					},
+				); err != nil {
 					return
 				}
 
-				oldSponsor.Image = *image
+				data.Model.Image = *image
 			}
 
 			if err != nil {
 				return
 			}
 
-			oldSponsor.Name = name
+			data.Model.Name = data.Name
 
-			return tx.Save(oldSponsor).Error
+			return tx.Save(data.Model).Error
 		},
 	)
 }

@@ -25,8 +25,10 @@ func CreateInvitation(ctx *fiber.Ctx) (err error) {
 	}
 
 	invitation, err := repo.UserInvitation().Create(
-		user.ID,
-		input.Comment,
+		repo.UserInvitationCreateOptions{
+			Inviter: user,
+			Comment: input.Comment,
+		},
 	)
 
 	if err != nil {

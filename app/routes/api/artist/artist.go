@@ -39,9 +39,11 @@ func CreateArtist(ctx *fiber.Ctx) (err error) {
 	}
 
 	artist, err := repo.Artist().Create(
-		input.Name,
-		logo,
-		ctx.Locals("user").(models.User).ID,
+		repo.ArtistCreateOptions{
+			Name:     input.Name,
+			Logo:     logo,
+			Uploader: ctx.Locals("user").(models.User),
+		},
 	)
 
 	if err != nil {
@@ -210,10 +212,12 @@ func UpdateArtist(ctx *fiber.Ctx) (err error) {
 	}
 
 	err = repo.Artist().Update(
-		&artist,
-		input.Name,
-		logo,
-		ctx.Locals("user").(models.User).ID,
+		repo.ArtistUpdateOptions{
+			Model:    &artist,
+			Name:     input.Name,
+			Logo:     logo,
+			Uploader: ctx.Locals("user").(models.User),
+		},
 	)
 
 	if err != nil {

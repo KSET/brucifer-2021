@@ -25,6 +25,11 @@ import (
 type imageRepo struct {
 }
 
+type ImageCreateOptions struct {
+	File     *multipart.FileHeader
+	Uploader models.User
+}
+
 func Image() imageRepo {
 	return imageRepo{}
 }
@@ -39,12 +44,12 @@ func (r imageRepo) VariationDimensions() []int {
 	}
 }
 
-func (r imageRepo) Create(logo *multipart.FileHeader, uploaderId uint) (im *models.Image, err error) {
-	if logo.Size > 5*1024*1024 {
+func (r imageRepo) Create(data ImageCreateOptions) (im *models.Image, err error) {
+	if data.File.Size > 5*1024*1024 {
 		return nil, errors.New("Logo must be smaller than 5MB")
 	}
 
-	logoFile, err := logo.Open()
+	logoFile, err := data.File.Open()
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +81,7 @@ func (r imageRepo) Create(logo *multipart.FileHeader, uploaderId uint) (im *mode
 	ctx := context.Background()
 
 	uploadTime := time.Now().UTC().UnixNano()
-	uploadFolder := fmt.Sprintf("uploads/%d/%d", uploaderId, uploadTime)
+	uploadFolder := fmt.Sprintf("uploads/%d/%d", data.Uploader.ID, uploadTime)
 	tmpDir, err := ioutil.TempDir("", fmt.Sprintf("brucifer-%d-*", uploadTime))
 	defer os.RemoveAll(tmpDir)
 
@@ -142,7 +147,7 @@ func (r imageRepo) Create(logo *multipart.FileHeader, uploaderId uint) (im *mode
 	}
 
 	im = &models.Image{
-		UploaderID: uploaderId,
+		UploaderID: data.Uploader.ID,
 		Key:        uploadFolder,
 		Variations: variations,
 	}

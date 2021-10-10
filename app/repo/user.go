@@ -11,7 +11,7 @@ import (
 type userRepo struct {
 }
 
-type UserCreateModel struct {
+type UserCreateOptions struct {
 	Email      string
 	Identity   string
 	Password   string
@@ -57,7 +57,7 @@ func (u userRepo) List() (users []models.User) {
 	return users
 }
 
-func (u userRepo) Create(model UserCreateModel) (
+func (u userRepo) Create(model UserCreateOptions) (
 	user models.User,
 	err error,
 ) {

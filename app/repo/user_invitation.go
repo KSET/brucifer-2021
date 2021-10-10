@@ -11,17 +11,22 @@ import (
 type userInvitationRepo struct {
 }
 
+type UserInvitationCreateOptions struct {
+	Inviter models.User
+	Comment string
+}
+
 func UserInvitation() userInvitationRepo {
 	return userInvitationRepo{}
 }
 
-func (r userInvitationRepo) Create(id uint, comment string) (invitation models.UserInvitation, err error) {
+func (r userInvitationRepo) Create(data UserInvitationCreateOptions) (invitation models.UserInvitation, err error) {
 	db := database.DatabaseProvider().Client()
 
 	invitation = models.UserInvitation{
-		CreatorID: id,
+		CreatorID: data.Inviter.ID,
 		Code:      uuid.New().String(),
-		Comment:   comment,
+		Comment:   data.Comment,
 	}
 
 	err = db.Save(&invitation).Error
