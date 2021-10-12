@@ -2,7 +2,6 @@ package image
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -50,7 +49,6 @@ func ShowImage(ctx *fiber.Ctx) (err error) {
 	)
 
 	if err != nil {
-		log.Printf("|imageRoute> %+v", err)
 		return ctx.SendStatus(fiber.StatusNotFound)
 	}
 
