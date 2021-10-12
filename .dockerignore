@@ -7,11 +7,14 @@
 
 .docker
 docker-compose.yml
+docker-compose.dev.yml
 docker-compose.override.yml
+Makefile
 
 bin
 .cache
 
 admin-ui
+**/node_modules
 
 README.md
