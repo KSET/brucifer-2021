@@ -196,6 +196,11 @@ main {
     }
 }
 
+.contents h1,
+.contents h3,
+.contents h4,
+.contents h5,
+.contents h6,
 .contents h2 {
     font-size: 1.5em;
 }
@@ -223,6 +228,36 @@ main {
 .contents section a {
     color: var(--bruc-black);
 }
+
+.contents p + h1 {
+    margin-top: 6rem;
+    transition: margin-top .3s ease;
+    will-change: margin-top;
+}
+
+@media screen and (max-width: 980px) {
+    .contents p + h1 {
+        margin-top: 4rem;
+    }
+}
+
+.contents section strong {
+    font-weight: bold;
+}
+
+.contents section em {
+    font-style: italic;
+}
+
+.contents section del {
+    text-decoration: line-through;
+}
+
+.contents section blockquote {
+    padding-left: .5em;
+    border-left: 4px solid rgba(0, 0, 0, .69);
+}
+
 
 .contents section hr {
     width: 5rem;

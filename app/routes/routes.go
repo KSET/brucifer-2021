@@ -8,6 +8,7 @@ import (
 	"brucosijada.kset.org/app/routes/api/artist"
 	"brucosijada.kset.org/app/routes/api/auth"
 	"brucosijada.kset.org/app/routes/api/image"
+	"brucosijada.kset.org/app/routes/api/page"
 	"brucosijada.kset.org/app/routes/api/sponsor"
 	"brucosijada.kset.org/app/routes/api/user"
 	"brucosijada.kset.org/app/routes/base"
@@ -62,6 +63,14 @@ func RegisterRoutes(app *fiber.App) {
 	ApiUserInvitation.Get("/", middleware.RequireAuth(), user.ListInvitations)
 	ApiUserInvitation.Post("/", middleware.RequireAuth(), user.CreateInvitation)
 	ApiUserInvitation.Delete("/:id", middleware.RequireAuth(), user.DeleteInvitation)
+
+	ApiPage := Api.Group("/page", middleware.RequireAuth())
+	ApiPage.Post("/", page.CreatePage)
+	ApiPage.Patch("/:id", page.UpdatePage)
+	ApiPage.Delete("/:id", page.DeletePage)
+	ApiPage.Get("/", page.ListPages)
+	ApiPage.Get("/rendered", page.RenderFromParam)
+	ApiPage.Get("/:id", page.ShowPage)
 
 	Base.Use(
 		func(c *fiber.Ctx) error {

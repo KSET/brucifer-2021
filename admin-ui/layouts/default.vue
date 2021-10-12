@@ -177,6 +177,44 @@
               </v-list-item-title>
             </v-list-item>
           </v-list-group>
+
+          <v-list-group
+            key="pages"
+            no-action
+            prepend-icon="mdi-file-document-multiple"
+          >
+            <template #activator>
+              <v-list-item-title>Pages</v-list-item-title>
+            </template>
+
+            <v-list-item
+              :to="{ name: 'PagePagesList' }"
+              exact
+              nuxt
+            >
+              <v-list-item-icon>
+                <v-icon>mdi-file-document-multiple-outline</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>
+                List
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-list-item
+              :to="{ name: 'PagePagesCreate' }"
+              exact
+              nuxt
+            >
+              <v-list-item-icon>
+                <v-icon>mdi-file-document</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-title>
+                Create
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
         </transition-group>
       </v-list>
     </v-navigation-drawer>
