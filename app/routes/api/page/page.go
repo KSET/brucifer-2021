@@ -15,51 +15,49 @@ import (
 	"brucosijada.kset.org/app/response"
 )
 
-func RenderPage(name string) func(ctx *fiber.Ctx) error {
-	return func(ctx *fiber.Ctx) error {
-		page := models.Page{}
+func RenderPage(ctx *fiber.Ctx) error {
+	page := models.Page{}
 
-		err := database.DatabaseProvider().Client().Where(
-			"name = ?",
-			name,
-		).Preload("Background.Variations").Preload("BackgroundMobile.Variations").First(&page).Error
+	err := database.DatabaseProvider().Client().Where(
+		"name = ?",
+		ctx.Params("pageName"),
+	).Preload("Background.Variations").Preload("BackgroundMobile.Variations").First(&page).Error
 
-		if err != nil {
-			panic(err)
-		}
-
-		var background *repo.ImageItemVariation = nil
-		if page.Background != nil {
-			bg := repo.Image().ToImageItem(page.Background)
-			sort.Slice(
-				bg.Variations, func(i, j int) bool {
-					return bg.Variations[i].Width > bg.Variations[j].Width
-				},
-			)
-			background = &bg.Variations[0]
-		}
-
-		var backgroundMobile *repo.ImageItemVariation = nil
-		if page.BackgroundMobile != nil {
-			bg := repo.Image().ToImageItem(page.BackgroundMobile)
-			sort.Slice(
-				bg.Variations, func(i, j int) bool {
-					return bg.Variations[i].Width > bg.Variations[j].Width
-				},
-			)
-			backgroundMobile = &bg.Variations[0]
-		}
-
-		return ctx.Render(
-			"shell",
-			fiber.Map{
-				"content":          page.Rendered,
-				"background":       background,
-				"backgroundMobile": backgroundMobile,
-			},
-			"layouts/main",
-		)
+	if err != nil {
+		return ctx.Next()
 	}
+
+	var background *repo.ImageItemVariation = nil
+	if page.Background != nil {
+		bg := repo.Image().ToImageItem(page.Background)
+		sort.Slice(
+			bg.Variations, func(i, j int) bool {
+				return bg.Variations[i].Width > bg.Variations[j].Width
+			},
+		)
+		background = &bg.Variations[0]
+	}
+
+	var backgroundMobile *repo.ImageItemVariation = nil
+	if page.BackgroundMobile != nil {
+		bg := repo.Image().ToImageItem(page.BackgroundMobile)
+		sort.Slice(
+			bg.Variations, func(i, j int) bool {
+				return bg.Variations[i].Width > bg.Variations[j].Width
+			},
+		)
+		backgroundMobile = &bg.Variations[0]
+	}
+
+	return ctx.Render(
+		"shell",
+		fiber.Map{
+			"content":          page.Rendered,
+			"background":       background,
+			"backgroundMobile": backgroundMobile,
+		},
+		"layouts/main",
+	)
 }
 
 func CreatePage(ctx *fiber.Ctx) (err error) {

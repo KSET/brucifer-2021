@@ -17,12 +17,10 @@ import (
 func RegisterRoutes(app *fiber.App) {
 	Base := app.Group("/")
 	Base.Get("/", base.Home)
-	Base.Get("/kontakt", base.Contact)
-	Base.Get("/ulaznice", base.Tickets)
-	Base.Get("/pravila", base.Rules)
 	Base.Get("/lineup", base.Lineup)
 	Base.Get("/sponzori", base.Sponsors)
 	Base.Get("/i/:id", image.ShowImage)
+	Base.Get("/:pageName", page.RenderPage)
 
 	Api := app.Group(
 		"/api", func(c *fiber.Ctx) error {
