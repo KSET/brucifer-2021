@@ -12,18 +12,18 @@ import (
 )
 
 func RenderPage(name string) func(ctx *fiber.Ctx) error {
-	page := models.Page{}
-
-	err := database.DatabaseProvider().Client().Where(
-		"name = ?",
-		name,
-	).First(&page).Error
-
-	if err != nil {
-		panic(err)
-	}
-
 	return func(ctx *fiber.Ctx) error {
+		page := models.Page{}
+
+		err := database.DatabaseProvider().Client().Where(
+			"name = ?",
+			name,
+		).First(&page).Error
+
+		if err != nil {
+			panic(err)
+		}
+
 		return ctx.Render(
 			"shell",
 			fiber.Map{
