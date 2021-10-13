@@ -9,6 +9,7 @@
     --bruc-pink: #f0526d;
     --bruc-orange: #f6892a;
 
+    --topbar-height: 64px;
     --topbar-border-height: 6px;
     --padding-percent: 6.25;
     --content-padding: 8.5;
@@ -59,7 +60,7 @@ h4 {
     font-family: 'Righteous', cursive;
     display: grid;
     align-content: stretch;
-    height: 64px;
+    height: var(--topbar-height);
     padding: 0 calc(var(--padding-percent) * 1vw);
     color: var(--bruc-black);
     background: var(--bruc-yellow);
@@ -173,8 +174,16 @@ h4 {
 }
 
 /*------------------ MAIN PAGE ------------------*/
+.page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: calc(100vh - var(--topbar-height));
+}
+
 main {
     position: relative;
+    flex: 1;
     padding-bottom: 82px;
     background-image: var(--background-image);
     background-repeat: no-repeat;
