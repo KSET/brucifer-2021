@@ -1,3 +1,21 @@
+<style>
+    {{#if background}}
+    :root {
+        --background-image: url("{{ background.Url }}");
+        --background-image-aspect-ratio: calc({{ background.Width }} / {{ background.Height }});
+    }
+    {{/if}}
+    {{#if backgroundMobile}}
+
+    @media screen and (max-width: 980px) {
+        :root {
+            --background-image: url("{{ backgroundMobile.Url }}");
+            --background-image-aspect-ratio: calc({{ backgroundMobile.Width }} / {{ backgroundMobile.Height }});
+        }
+    }
+    {{/if}}
+</style>
+
 <section>
     {{{content}}}
 </section>

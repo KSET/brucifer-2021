@@ -25,7 +25,7 @@
 
           <v-btn
             :loading="loading"
-            :to="{ name: 'PagePagesEdit', params: { id: page._id } }"
+            :to="{ name: 'PagePagesEdit', params: { id: page.id } }"
             color="warning"
             icon
             nuxt
@@ -78,7 +78,7 @@ name: PagePagesList
         this.loading = true;
         try {
           const { status, message } = await this.remove({
-            id: sponsor._id,
+            id: sponsor.id,
           });
 
           if ("success" !== status) {

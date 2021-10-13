@@ -27,9 +27,27 @@
             md="6"
           >
             <v-file-input
+              v-model="form.inputs.background"
               accept="image/*"
+              clearable
               label="Background"
             />
+            <div
+              v-if="form.inputs.backgroundId"
+            >
+              <v-img
+                :src="page.background.srcset[page.background.srcset.length - 1].url"
+                contain
+                max-height="150px"
+              />
+              <v-btn
+                color="error"
+                icon
+                @click="form.inputs.backgroundId = null"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </div>
           </v-col>
 
           <v-col
@@ -37,9 +55,27 @@
             md="6"
           >
             <v-file-input
+              v-model="form.inputs.backgroundMobile"
               accept="image/*"
+              clearable
               label="Background Mobile"
             />
+            <div
+              v-if="form.inputs.backgroundMobileId"
+            >
+              <v-img
+                :src="page.backgroundMobile.srcset[page.backgroundMobile.srcset.length - 1].url"
+                contain
+                max-height="150px"
+              />
+              <v-btn
+                color="error"
+                icon
+                @click="form.inputs.backgroundMobileId = null"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </div>
           </v-col>
 
           <v-col cols="12">
@@ -134,6 +170,10 @@ name: PagePagesEdit
           inputs: {
             name: String(page.name),
             markdown: String(page.contents || ""),
+            background: null,
+            backgroundId: page.background?.id,
+            backgroundMobile: null,
+            backgroundMobileId: page.backgroundMobile?.id,
           },
           rules: {
             username: [
@@ -169,7 +209,7 @@ name: PagePagesEdit
         this.form.loading = true;
         try {
           const res = await this.update({
-            id: this.page._id,
+            id: this.page.id,
             ...inputs,
           });
 

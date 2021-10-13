@@ -22,6 +22,30 @@
             />
           </v-col>
 
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <v-file-input
+              v-model="form.inputs.background"
+              accept="image/*"
+              clearable
+              label="Background"
+            />
+          </v-col>
+
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <v-file-input
+              v-model="form.inputs.backgroundMobile"
+              accept="image/*"
+              clearable
+              label="Background Mobile"
+            />
+          </v-col>
+
           <v-col cols="12">
             <div>
               <client-only>
@@ -110,6 +134,8 @@ name: PagePagesCreate
         inputs: {
           name: "",
           markdown: "",
+          background: null,
+          backgroundMobile: null,
         },
         rules: {
           username: [

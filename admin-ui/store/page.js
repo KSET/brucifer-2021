@@ -29,14 +29,19 @@ export const actions = {
     {
       name,
       markdown,
+      background,
+      backgroundMobile,
     },
   ) {
+    const data = new FormData();
+    data.set("name", name);
+    data.set("markdown", markdown);
+    data.set("background", background);
+    data.set("backgroundMobile", backgroundMobile);
+
     const response = await this.$api.$post(
       "/page/",
-      {
-        name,
-        markdown,
-      },
+      data,
     );
 
     return response;
@@ -89,14 +94,23 @@ export const actions = {
       id,
       name,
       markdown,
+      background,
+      backgroundId,
+      backgroundMobile,
+      backgroundMobileId,
     },
   ) {
+    const data = new FormData();
+    data.set("name", name);
+    data.set("markdown", markdown);
+    data.set("background", background);
+    data.set("backgroundId", backgroundId);
+    data.set("backgroundMobile", backgroundMobile);
+    data.set("backgroundMobileId", backgroundMobileId);
+
     const response = await this.$api.$patch(
       `/page/${ id }`,
-      {
-        name,
-        markdown,
-      },
+      data,
     );
 
     if ("success" === response?.status) {

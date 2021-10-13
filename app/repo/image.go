@@ -30,6 +30,17 @@ import (
 type imageRepo struct {
 }
 
+type ImageItemVariation struct {
+	Width  uint   `json:"width"`
+	Height uint   `json:"height"`
+	Url    string `json:"url"`
+}
+
+type ImageItem struct {
+	ID         uuid.UUID            `json:"id"`
+	Variations []ImageItemVariation `json:"srcset"`
+}
+
 type ImageCreateOptions struct {
 	File     *multipart.FileHeader
 	Uploader models.User
@@ -122,6 +133,29 @@ func (r imageRepo) GetVariationByUuid(uuid uuid.UUID) (*models.ImageVariation, e
 	).First(&im).Error
 
 	return &im, err
+}
+
+func (r imageRepo) ToImageItem(model *models.Image) (item *ImageItem) {
+	if model == nil {
+		return nil
+	}
+
+	variations := make([]ImageItemVariation, 0)
+	for _, variation := range model.Variations {
+		variations = append(
+			variations,
+			ImageItemVariation{
+				Width:  variation.Width,
+				Height: variation.Height,
+				Url:    fmt.Sprintf("/i/%s", variation.UUID.String()),
+			},
+		)
+	}
+
+	return &ImageItem{
+		ID:         model.UUID,
+		Variations: variations,
+	}
 }
 
 func (r imageRepo) uploadSvg(
