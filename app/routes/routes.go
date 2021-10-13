@@ -72,13 +72,25 @@ func RegisterRoutes(app *fiber.App) {
 	ApiPage.Get("/rendered", page.RenderFromParam)
 	ApiPage.Get("/:id", page.ShowPage)
 
-	Base.Use(
+	Api.Use(
 		func(c *fiber.Ctx) error {
 			return c.Status(fiber.StatusNotFound).JSON(
 				response.Error(
 					"Not found",
 					nil,
 				),
+			)
+		},
+	)
+
+	Base.Use(
+		func(c *fiber.Ctx) (err error) {
+			return c.Status(fiber.StatusNotFound).Render(
+				"shell",
+				fiber.Map{
+					"content": "<h1>Greška 404</h1><h2>Stranica nije pronađena<h2>",
+				},
+				"layouts/main",
 			)
 		},
 	)
