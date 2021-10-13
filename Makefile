@@ -107,7 +107,6 @@ server/redeploy: $pull server/rebuild
 docker/build:
 	$(DOCKER_COMPOSE) \
 			build \
-			--parallel \
     		--compress \
     		--pull
 
