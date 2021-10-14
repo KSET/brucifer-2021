@@ -27,9 +27,13 @@
 
         .lineup {
             display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             grid-row-gap: 3.45rem;
             grid-column-gap: 5.25rem;
+            will-change: grid-row-gap, grid-column-gap;
+            transition-duration: .2s;
+            transition-timing-function: ease;
+            transition-property: grid-row-gap, grid-column-gap;
         }
 
         .image-container {
@@ -66,11 +70,22 @@
             font-size: 2.25rem;
             color: var(--bruc-white);
             text-transform: uppercase;
+            word-break: break-all;
+            margin-top: .3em;
+            will-change: font-size;
+            transition-duration: .2s;
+            transition-timing-function: ease;
+            transition-property: font-size;
         }
 
         @media screen and (max-width: 1400px) {
             .lineup {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-column-gap: 3rem;
+            }
+
+            .artist {
+                padding: 15px 30px;
             }
 
             .artist h3 {
@@ -81,6 +96,11 @@
         @media screen and (max-width: 980px) {
             .lineup {
                 grid-template-columns: repeat(3, minmax(0, 1fr));
+                grid-column-gap: 2.85rem;
+            }
+
+            .artist {
+                padding: 10px 20px;
             }
 
             .artist h3 {
@@ -91,6 +111,7 @@
         @media screen and (max-width: 635px) {
             .lineup {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-column-gap: 2rem;
             }
 
             .artist h3 {
@@ -102,6 +123,11 @@
             .lineup {
                 grid-template-columns: repeat(1, minmax(0, 1fr));
                 grid-row-gap: 1.2rem;
+            }
+
+
+            .artist {
+                padding: 8px 12px;
             }
         }
         {{#each artists}}
