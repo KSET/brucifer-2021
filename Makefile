@@ -146,9 +146,11 @@ SHARP_CMD=npx sharp-cli
 SHARP_FLAGS=--progressive --quality 100 --lossless --smartSubsample
 SQUOOSH_CMD=npx @squoosh/cli
 SQUOOSH_FLAGS=--optimizer-butteraugli-target 1.85
-ASSET_LIST= \
-	assets/images/preview/bg.jpg \
+ASSET_LIST_BG=\
+	assets/images/preview/bg.jpg
+ASSET_LIST_BG_MOBILE=\
 	assets/images/preview/bg-mobile.jpg
+ASSET_LIST=$(ASSET_LIST_BG) $(ASSET_LIST_BG_MOBILE)
 
 .PHONY: assets
 assets: $(ASSET_LIST)
@@ -157,9 +159,9 @@ assets: $(ASSET_LIST)
 assets/clean:
 	rm -rf $(ASSET_LIST)
 
-assets/images/preview/bg.jpg:
+$(ASSET_LIST_BG):
 	$(SHARP_CMD) $(SHARP_FLAGS) \
-		--input '$(@D)/bg.svg' \
+		--input '$(strip $(patsubst %.jpg,,$(wildcard $(patsubst %.jpg,%,$@).*)))' \
 		--output '$@' \
 		resize 2560 \
 	&& $(SQUOOSH_CMD) $(SQUOOSH_FLAGS) \
@@ -168,9 +170,9 @@ assets/images/preview/bg.jpg:
 		--mozjpeg '{"quality":85,"baseline":false,"arithmetic":false,"progressive":true,"optimize_coding":true,"smoothing":0,"color_space":3,"quant_table":3,"trellis_multipass":true,"trellis_opt_zero":true,"trellis_opt_table":true,"trellis_loops":1,"auto_subsample":true,"chroma_subsample":2,"separate_chroma_quality":false,"chroma_quality":75}' \
 		$@
 
-assets/images/preview/bg-mobile.jpg:
+$(ASSET_LIST_BG_MOBILE):
 	$(SHARP_CMD) $(SHARP_FLAGS) \
-		--input '$(@D)/bg-mobile.png' \
+		--input '$(strip $(patsubst %.jpg,,$(wildcard $(patsubst %.jpg,%,$@).*)))' \
 		--output '$@' \
 		resize 1080 \
 	&& $(SQUOOSH_CMD) $(SQUOOSH_FLAGS) \
