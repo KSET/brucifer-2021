@@ -1,2 +1,4 @@
-preview/bg.jpg
-preview/bg-mobile.jpg
+preview/*.jpg
+frontpage/*.jpg
+/bg.jpg
+/bg-mobile.jpg

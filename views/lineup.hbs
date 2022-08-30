@@ -1,19 +1,4 @@
 {{#unless hasArtists}}
-    <link rel="stylesheet" href="/assets/styles/page.image.css?v={{_buildTime}}"/>
-    <style>
-        :root {
-            --background-image: url("/assets/images/lineup/bg.svg?v={{_buildTime}}");
-            --background-image-aspect-ratio: calc(715 / 1366);
-        }
-
-        @media screen and (max-width: 980px) {
-            :root {
-                --background-image: url("/assets/images/lineup/bg-mobile.svg?v={{_buildTime}}");
-                --background-image-aspect-ratio: calc(640 / 358);
-            }
-        }
-    </style>
-
     <div class="image-container">
         <div class="image-sizer"></div>
         <div class="image-frame"></div>

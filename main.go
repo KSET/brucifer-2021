@@ -152,7 +152,7 @@ func main() {
 		helmet.New(
 			helmet.Config{
 				ReferrerPolicy:        "no-referrer-when-downgrade",
-				ContentSecurityPolicy: "default-src 'self'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com",
+				ContentSecurityPolicy: "default-src 'self'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com; script-src 'unsafe-inline'",
 			},
 		),
 	)

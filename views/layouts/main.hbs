@@ -4,17 +4,24 @@
         {{> 'partials/layouts/main/head/meta' }}
         <title>Brucošijada FER-a {{_currentYear}}.</title>
         <link href="/assets/styles/reset.css" rel="stylesheet">
+        <link
+                rel="preload" href="https://fonts.googleapis.com/css2?family=Antonio&display=swap"
+                as="style" onload="this.onload=null;this.rel='stylesheet'"
+        >
+        <noscript>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio&display=swap">
+        </noscript>
         <link href="/assets/styles/page.css?v={{_buildTime}}" rel="stylesheet">
         <style>
             :root {
                 --background-image: url("/assets/images/bg.svg?v={{_buildTime}}");
-                --background-image-aspect-ratio: calc(879 / 1366);
+                --background-image-aspect-ratio: calc(1080 / 1920);
             }
 
             @media screen and (max-width: 980px) {
                 :root {
                     --background-image: url("/assets/images/bg-mobile.svg?v={{_buildTime}}");
-                    --background-image-aspect-ratio: calc(1774 / 360);
+                    --background-image-aspect-ratio: calc(962 / 601);
                 }
             }
         </style>
@@ -77,7 +84,7 @@
             </span>
                 <span style="margin-left: auto"></span>
                 <span style="z-index: 999">
-                <a class="white" href="/pravila">Pravila ponašanja</a>
+                <a href="/pravila">Pravila ponašanja</a>
             </span>
             </footer>
         </div>

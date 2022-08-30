@@ -1,47 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway&family=Righteous&display=swap');
-
 /*------------------ GLOBAL STUFF ------------------*/
 
 :root {
-    --bruc-white: #f0feff;
-    --bruc-black: #0c001e;
-    --bruc-yellow: #f4d51d;
-    --bruc-pink: #f0526d;
-    --bruc-orange: #f6892a;
+    --bruc-white: #ffffff;
+    --bruc-black: #000000;
 
-    --topbar-height: 64px;
+    --bg-color-top: #dc5e88;
+    --bg-color-bottom: #f6bb96;
+
+    --topbar-height: 70px;
     --topbar-border-height: 6px;
-    --padding-percent: 6.25;
-    --content-padding: 8.5;
+    --nav-padding-percent: 2.5;
+    --nav-fade-height: 8px;
+    --content-padding: 2.5;
 
     --background-image: url("/assets/images/bg.svg");
-    --background-image-aspect-ratio: calc(879 / 1366);
+    --background-image-aspect-ratio: calc(1080 / 1920);
 }
 
 @media screen and (max-width: 980px) {
     :root {
-        --content-padding: 6.66;
+        --nav-padding-percent: 5;
+        --content-padding: 3.75;
         --background-image: url("/assets/images/bg-mobile.svg");
-        --background-image-aspect-ratio: calc(1774 / 360);
+        --background-image-aspect-ratio: calc(962 / 601);
     }
 }
 
 html {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Antonio', sans-serif;
     font-size: 16px;
-    background-color: var(--bruc-pink);
+    font-weight: 400;
+    background: linear-gradient(to bottom, var(--bg-color-top), var(--bg-color-bottom));
 }
 
 a {
     text-decoration: none;
     color: var(--bruc-black);
-}
-
-h1,
-h2,
-h3,
-h4 {
-    font-family: 'Righteous', cursive;
 }
 
 /*------------------ TOPBAR ------------------*/
@@ -56,14 +50,26 @@ h4 {
     fill: var(--bruc-black) !important;
 }
 
+.topbar::after {
+    position: absolute;
+    right: 0;
+    bottom: calc(var(--nav-fade-height) * -1);
+    left: 0;
+    height: var(--nav-fade-height);
+    content: "";
+    background: linear-gradient(var(--bg-color-top), transparent);
+}
+
 .topbar {
-    font-family: 'Righteous', cursive;
+    position: relative;
+    z-index: 9;
     display: grid;
     align-content: stretch;
     height: var(--topbar-height);
-    padding: 0 calc(var(--padding-percent) * 1vw);
+    padding: 0 calc(var(--nav-padding-percent) * 1vw);
     color: var(--bruc-black);
-    background: var(--bruc-yellow);
+    background-color: var(--bg-color-top);
+    box-shadow: 0 0 25px 4px var(--bg-color-top);
     grid-template-columns: 1fr 1fr;
 }
 
@@ -136,7 +142,6 @@ h4 {
 }
 
 .links-mobile {
-    font-family: 'Righteous', cursive;
     position: fixed;
     z-index: 999;
     top: 0;
@@ -144,7 +149,7 @@ h4 {
     bottom: 0;
     left: 0;
     display: none;
-    background-color: var(--bruc-yellow);
+    background-color: var(--bg-color-top);
 }
 
 .links-mobile .links-container {
@@ -155,7 +160,7 @@ h4 {
 
 .links-mobile .links-container a {
     font-size: 1.4rem;
-    padding: 0 calc(var(--padding-percent) * 1vw);
+    padding: 0 calc(var(--nav-padding-percent) * 1vw);
 }
 
 .links-mobile .links-container a > span {
@@ -185,6 +190,7 @@ main {
     position: relative;
     flex: 1;
     padding-bottom: 82px;
+    background: linear-gradient(to bottom, var(--bg-color-top), var(--bg-color-bottom));
     background-image: var(--background-image);
     background-repeat: no-repeat;
     background-position: top right;
@@ -192,7 +198,6 @@ main {
 }
 
 .contents {
-    font-size: 1.5rem;
     padding: 0 calc(var(--content-padding) * 1vw);
     padding-top: calc(var(--content-padding) * 0.85 * 1vw);
     transition: padding .3s ease, font-size .3s ease;
@@ -281,23 +286,23 @@ main {
 
 /*------------------ FOOTER ------------------*/
 
-footer::before {
+footer::after {
     position: absolute;
-    top: -81px;
+    top: calc(var(--nav-fade-height) * -1);
     right: 0;
     left: 0;
-    height: 82px;
+    height: var(--nav-fade-height);
     content: "";
-    background-image: url(/assets/images/footer/bg.svg);
-    background-repeat: repeat-x;
+    background: linear-gradient(to top, var(--bg-color-bottom), transparent);
 }
 
 footer {
     position: relative;
     display: flex;
     align-items: center;
-    height: 110px;
-    padding: 0 calc(var(--padding-percent) * 1vw);
-    color: var(--bruc-white);
-    background-color: var(--bruc-pink);
+    height: 70px;
+    padding: 0 calc(var(--nav-padding-percent) * 1vw);
+    letter-spacing: -0.022em;
+    color: var(--bruc-black);
+    background-color: var(--bg-color-bottom);
 }

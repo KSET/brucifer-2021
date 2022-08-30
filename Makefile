@@ -147,8 +147,10 @@ SHARP_FLAGS=--progressive --quality 100 --lossless --smartSubsample
 SQUOOSH_CMD=npx @squoosh/cli
 SQUOOSH_FLAGS=--optimizer-butteraugli-target 1.85
 ASSET_LIST_BG=\
+	assets/images/frontpage/bg.jpg \
 	assets/images/preview/bg.jpg
 ASSET_LIST_BG_MOBILE=\
+	assets/images/frontpage/bg-mobile.jpg \
 	assets/images/preview/bg-mobile.jpg
 ASSET_LIST=$(ASSET_LIST_BG) $(ASSET_LIST_BG_MOBILE)
 
