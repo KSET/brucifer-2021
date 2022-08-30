@@ -167,7 +167,7 @@ $(ASSET_LIST_BG):
 	&& $(SQUOOSH_CMD) $(SQUOOSH_FLAGS) \
 		--output-dir '$(@D)' \
 		--resize '{"enabled":true,"width":2560,"height":1440,"method":"mitchell","fitMethod":"stretch","premultiply":true,"linearRGB":true}' \
-		--mozjpeg '{"quality":85,"baseline":false,"arithmetic":false,"progressive":true,"optimize_coding":true,"smoothing":0,"color_space":3,"quant_table":3,"trellis_multipass":true,"trellis_opt_zero":true,"trellis_opt_table":true,"trellis_loops":1,"auto_subsample":true,"chroma_subsample":2,"separate_chroma_quality":false,"chroma_quality":75}' \
+		--mozjpeg '{"quality":92,"baseline":false,"arithmetic":false,"progressive":true,"optimize_coding":true,"smoothing":0,"color_space":3,"quant_table":3,"trellis_multipass":true,"trellis_opt_zero":true,"trellis_opt_table":true,"trellis_loops":1,"auto_subsample":true,"chroma_subsample":2,"separate_chroma_quality":false,"chroma_quality":75}' \
 		$@
 
 $(ASSET_LIST_BG_MOBILE):
@@ -178,5 +178,5 @@ $(ASSET_LIST_BG_MOBILE):
 	&& $(SQUOOSH_CMD) $(SQUOOSH_FLAGS) \
 		--output-dir '$(@D)' \
 		--resize '{"enabled":true,"width":1080,"height":1920,"method":"mitchell","fitMethod":"stretch","premultiply":true,"linearRGB":true}' \
-		--mozjpeg '{"quality":85,"baseline":false,"arithmetic":false,"progressive":true,"optimize_coding":true,"smoothing":0,"color_space":3,"quant_table":3,"trellis_multipass":true,"trellis_opt_zero":true,"trellis_opt_table":true,"trellis_loops":1,"auto_subsample":true,"chroma_subsample":2,"separate_chroma_quality":false,"chroma_quality":75}' \
+		--mozjpeg '{"quality":91,"baseline":false,"arithmetic":false,"progressive":true,"optimize_coding":true,"smoothing":0,"color_space":3,"quant_table":3,"trellis_multipass":true,"trellis_opt_zero":true,"trellis_opt_table":true,"trellis_loops":1,"auto_subsample":true,"chroma_subsample":2,"separate_chroma_quality":false,"chroma_quality":75}' \
 		$@
