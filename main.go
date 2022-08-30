@@ -17,11 +17,10 @@ import (
 	"brucosijada.kset.org/app/providers/hash"
 	"brucosijada.kset.org/app/providers/minio"
 	"brucosijada.kset.org/app/providers/session"
+	"brucosijada.kset.org/app/providers/viewEngine"
 	"brucosijada.kset.org/app/repo"
 	"brucosijada.kset.org/app/routes"
 	"brucosijada.kset.org/app/util/async"
-
-	"brucosijada.kset.org/src/template/handlebars"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/etag"
@@ -109,10 +108,6 @@ func main() {
 	}
 
 	viewsFolder, _ := fs.Sub(views, "views")
-	engine := handlebars.NewFileSystem(
-		http.FS(viewsFolder),
-		".hbs",
-	)
 
 	app := fiber.New(
 		fiber.Config{
@@ -120,7 +115,7 @@ func main() {
 			ReadTimeout:      10 * time.Second,
 			ServerHeader:     "Microsoft-IIS/7.0",
 			AppName:          "Brucifer 2021.",
-			Views:            engine,
+			Views:            viewEngine.Init(viewsFolder),
 			BodyLimit:        200 * 1024 * 1024 * 1,
 			Prefork:          false,
 		},
