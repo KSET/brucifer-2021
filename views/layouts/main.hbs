@@ -5,9 +5,22 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
         <meta content="text/html; charset=UTF-8" http-equiv="content-type">
-        <title>Brucošijada FER-a 2021.</title>
+        <title>Brucošijada FER-a {{_currentYear}}.</title>
         <link href="/assets/styles/reset.css" rel="stylesheet">
-        <link href="/assets/styles/page.css?v=2021-10-13T22:45:00Z" rel="stylesheet">
+        <link href="/assets/styles/page.css?v={{_buildTime}}" rel="stylesheet">
+        <style>
+            :root {
+                --background-image: url("/assets/images/bg.svg?v={{_buildTime}}");
+                --background-image-aspect-ratio: calc(879 / 1366);
+            }
+
+            @media screen and (max-width: 980px) {
+                :root {
+                    --background-image: url("/assets/images/bg-mobile.svg?v={{_buildTime}}");
+                    --background-image-aspect-ratio: calc(1774 / 360);
+                }
+            }
+        </style>
     </head>
 
     <body>
@@ -63,7 +76,7 @@
             </main>
             <footer>
             <span>
-                KSET © Copyright 2021. All Rights Reserved.
+                KSET &copy; Copyright {{_currentYear}}. All Rights Reserved.
             </span>
                 <span style="margin-left: auto"></span>
                 <span style="z-index: 999">

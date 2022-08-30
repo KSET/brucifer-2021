@@ -21,6 +21,7 @@ import (
 	"brucosijada.kset.org/app/repo"
 	"brucosijada.kset.org/app/routes"
 	"brucosijada.kset.org/app/util/async"
+	"brucosijada.kset.org/app/version"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/etag"
@@ -114,7 +115,7 @@ func main() {
 			DisableKeepalive: true,
 			ReadTimeout:      10 * time.Second,
 			ServerHeader:     "Microsoft-IIS/7.0",
-			AppName:          "Brucifer 2021.",
+			AppName:          fmt.Sprintf("Brucifer %d.", version.BuildTime().Year()),
 			Views:            viewEngine.Init(viewsFolder),
 			BodyLimit:        200 * 1024 * 1024 * 1,
 			Prefork:          false,
