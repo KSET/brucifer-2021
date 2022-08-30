@@ -23,6 +23,7 @@ func RegisterRoutes(app *fiber.App) {
 
 	if isPreview {
 		Base.Get("/", base.Preview)
+		Base.Get("/i/:id", image.ShowImage)
 	} else {
 		Base.Get("/", base.Home)
 		Base.Get("/lineup", base.Lineup)
