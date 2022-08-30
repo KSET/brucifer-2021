@@ -6,7 +6,7 @@ RUN npm install --global \
         @squoosh/cli
 COPY assets ./assets
 COPY ./Makefile .
-RUN make assets \
+RUN make -j assets \
       SHARP_CMD=sharp \
       SQUOOSH_CMD=squoosh-cli
 
