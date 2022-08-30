@@ -115,7 +115,7 @@ server/stop: docker/down
 server/restart: server/stop server/start
 
 .PHONY: server/rebuild
-server/rebuild: docker/build server/restart
+server/rebuild: docker/build server/start
 
 .PHONY: server/redeploy
 server/redeploy: $pull server/rebuild
