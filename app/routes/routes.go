@@ -77,6 +77,7 @@ func RegisterRoutes(app *fiber.App) {
 	ApiPage.Delete("/:id", page.DeletePage)
 	ApiPage.Get("/", page.ListPages)
 	ApiPage.Get("/rendered", page.RenderFromParam)
+	ApiPage.Post("/rendered", page.RenderFromPost)
 	ApiPage.Get("/:id", page.ShowPage)
 
 	Api.Use(

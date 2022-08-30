@@ -314,3 +314,28 @@ func RenderFromParam(c *fiber.Ctx) error {
 		"layouts/main",
 	)
 }
+
+func RenderFromPost(ctx *fiber.Ctx) error {
+	var input struct {
+		Markdown string
+	}
+
+	if err := ctx.BodyParser(&input); err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(
+			response.Error(
+				"Invalid request",
+				err,
+			),
+		)
+	}
+
+	content := markdown.MarkdownProvider().Render(input.Markdown)
+
+	return ctx.Render(
+		"shell",
+		fiber.Map{
+			"content": content,
+		},
+		"layouts/main",
+	)
+}

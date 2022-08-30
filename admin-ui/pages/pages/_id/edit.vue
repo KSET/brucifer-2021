@@ -94,15 +94,21 @@
         </v-row>
 
         <v-row>
-          <v-col cols="12">
+          <v-col :class="$style.iframeContainer" cols="12">
+            <transition>
+              <div
+                v-if="preview.loading"
+                :class="$style.iframeLoadingContainer"
+              >
+                <v-progress-circular
+                  color="secondary"
+                  indeterminate
+                />
+              </div>
+            </transition>
             <iframe
-              :src="$router.resolve({
-                path: '/api/page/rendered',
-                query: {
-                  p: form.inputs.markdown,
-                },
-              }).href.replace(/^\/admin\//, '/')"
-              style="width: 100%; height: 500px;"
+              ref="previewFrame"
+              style="width: 100%; height: 500px; border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 4px;"
             />
           </v-col>
         </v-row>
@@ -138,6 +144,53 @@ name: PagePagesEdit
 
   import "@toast-ui/editor/dist/toastui-editor.css";
   import "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
+
+
+  // Returns a function, that, when invoked, will only be triggered at most once
+  // during a given window of time. Normally, the throttled function will run
+  // as much as it can, without ever going more than once per `wait` duration;
+  // but if you'd like to disable the execution on the leading edge, pass
+  // `{leading: false}`. To disable execution on the trailing edge, ditto.
+  function throttle(func, wait, options = {}) {
+    let context, args, result;
+    let timeout = null;
+    let previous = 0;
+
+    const later = () => {
+      previous = false === options.leading ? 0 : Date.now();
+      timeout = null;
+      result = func.apply(context, args);
+      if (!timeout) {
+        context = null;
+        args = null;
+      }
+    };
+
+    return function(...argList) {
+      const now = Date.now();
+      if (!previous && false === options.leading) {
+        previous = now;
+      }
+      const remaining = wait - (now - previous);
+      context = this;
+      args = argList;
+      if (0 >= remaining || remaining > wait) {
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+        previous = now;
+        result = func.apply(context, args);
+        if (!timeout) {
+          context = null;
+          args = null;
+        }
+      } else if (!timeout && false !== options.trailing) {
+        timeout = setTimeout(later, remaining);
+      }
+      return result;
+    };
+  }
 
   export default {
     components: {
@@ -185,6 +238,9 @@ name: PagePagesEdit
           },
           loading: false,
         },
+        preview: {
+          loading: false,
+        },
       });
     },
 
@@ -194,6 +250,23 @@ name: PagePagesEdit
       ]),
     },
 
+    watch: {
+      "form.inputs.markdown": throttle(
+        function() {
+          this.fetchRenderedPage();
+        },
+        1000,
+        {
+          leading: true,
+          trailing: true,
+        },
+      ),
+    },
+
+    mounted() {
+      this.fetchRenderedPage();
+    },
+
     methods: {
       ...mapActions("page", [
         "update",
@@ -201,6 +274,23 @@ name: PagePagesEdit
 
       onEditorChange() {
         this.form.inputs.markdown = this.$refs.editor.invoke("getMarkdown");
+      },
+
+      async fetchRenderedPage() {
+        const { inputs } = this.form;
+
+        const data = new FormData();
+        data.set("markdown", inputs.markdown);
+
+        this.preview.loading = true;
+        const resp = await this.$api.post("/page/rendered", data);
+        this.preview.loading = false;
+
+        const $preview = this.$refs.previewFrame;
+        const doc = $preview.contentWindow.document || $preview.contentDocument;
+        const $doc = doc.open();
+        $doc.write(resp.data);
+        $doc.close();
       },
 
       async doSubmit() {
@@ -230,3 +320,31 @@ name: PagePagesEdit
     },
   };
 </script>
+
+<style lang="scss" module>
+  .iframeContainer {
+    position: relative;
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+    :global {
+      .v-enter-active,
+      .v-leave-active {
+        transition: opacity 0.25s ease-out;
+      }
+
+      .v-enter-from,
+      .v-leave-to {
+        opacity: 0;
+      }
+    }
+
+    .iframeLoadingContainer {
+      position: absolute;
+      top: 1.5em;
+      left: 1.5em;
+      padding: 0.5em;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.5);
+    }
+  }
+</style>
