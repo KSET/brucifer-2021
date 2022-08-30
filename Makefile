@@ -8,10 +8,10 @@ DOCKER_COMPOSE_DEV=$(DOCKER_COMPOSE) \
 	-f 'docker-compose.override.yml'
 
 PACKAGE=brucosijada.kset.org
-define LDFLAGS_MULTI
+define LDFLAGS
 -X '$(PACKAGE)/app/version.buildTimestamp=$(shell date --utc '+%Y-%m-%dT%H:%M:%S%z')'
 endef
-LDFLAGS=$(shell tr '\n' ' ' <<< '$(strip $(LDFLAGS_MULTI))')
+LDFLAGS:=$(strip $(LDFLAGS))
 
 .PHONY: clean
 clean: assets/clean
@@ -25,7 +25,7 @@ build: assets
 	-a \
 	-tags osusergo,netgo \
 	-gcflags "all=-N -l" \
-	-ldflags="-s -w -extldflags \"-static\" $(shell tr '\n' ' ' <<< '$(strip $(LDFLAGS))')" \
+	-ldflags="-s -w -extldflags \"-static\" $(LDFLAGS)" \
 	-o "${OUTPUT_BINARY}" \
 	main.go
 
