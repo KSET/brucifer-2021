@@ -13,6 +13,7 @@ WORKDIR /go/src/app
 
 RUN apt-get update \
     && apt-get install -y \
+    make \
     upx
 
 COPY go.mod go.sum ./
@@ -22,13 +23,8 @@ RUN CGO_ENABLED=0 go mod download
 COPY . .
 COPY --from=asset-builder assets .
 
-RUN CGO_ENABLED=0 \
-    	go \
-    	build \
-    	-a \
-    	-gcflags "all=-N -l" \
-    	-o "/brucifer" \
-    	main.go
+RUN make build \
+      OUTPUT_BINARY='/brucifer'
 
 
 # Run app in a slim container
