@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"os"
+
 	"github.com/gofiber/fiber/v2"
 
 	"brucosijada.kset.org/app/middleware"
@@ -15,12 +17,19 @@ import (
 )
 
 func RegisterRoutes(app *fiber.App) {
+	isPreview := os.Getenv("IS_PREVIEW") == "true"
+
 	Base := app.Group("/")
-	Base.Get("/", base.Home)
-	Base.Get("/lineup", base.Lineup)
-	Base.Get("/sponzori", base.Sponsors)
-	Base.Get("/i/:id", image.ShowImage)
-	Base.Get("/:pageName", page.RenderPage)
+
+	if isPreview {
+		Base.Get("/", base.Preview)
+	} else {
+		Base.Get("/", base.Home)
+		Base.Get("/lineup", base.Lineup)
+		Base.Get("/sponzori", base.Sponsors)
+		Base.Get("/i/:id", image.ShowImage)
+		Base.Get("/:pageName", page.RenderPage)
+	}
 
 	Api := app.Group(
 		"/api", func(c *fiber.Ctx) error {
@@ -81,15 +90,27 @@ func RegisterRoutes(app *fiber.App) {
 		},
 	)
 
-	Base.Use(
-		func(c *fiber.Ctx) (err error) {
-			return c.Status(fiber.StatusNotFound).Render(
-				"shell",
-				fiber.Map{
-					"content": "<h1>Greška 404</h1><h2>Stranica nije pronađena<h2>",
-				},
-				"layouts/main",
-			)
-		},
-	)
+	if isPreview {
+		Base.Use(
+			func(c *fiber.Ctx) (err error) {
+				return c.Status(fiber.StatusNotFound).Render(
+					"preview",
+					fiber.Map{},
+					"layouts/bare",
+				)
+			},
+		)
+	} else {
+		Base.Use(
+			func(c *fiber.Ctx) (err error) {
+				return c.Status(fiber.StatusNotFound).Render(
+					"shell",
+					fiber.Map{
+						"content": "<h1>Greška 404</h1><h2>Stranica nije pronađena<h2>",
+					},
+					"layouts/main",
+				)
+			},
+		)
+	}
 }

@@ -6,6 +6,14 @@ import (
 	"brucosijada.kset.org/app/repo"
 )
 
+func Preview(c *fiber.Ctx) error {
+	return c.Render(
+		"preview",
+		fiber.Map{},
+		"layouts/bare",
+	)
+}
+
 func Home(c *fiber.Ctx) error {
 	return c.Render(
 		"index",
