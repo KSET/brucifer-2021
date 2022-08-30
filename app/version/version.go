@@ -8,7 +8,6 @@ import (
 const TimeFormat = "2006-01-02T15:04:05-0700"
 
 var (
-	CommitHash                = "dev"
 	buildTimestamp            = TimeFormat
 	initialTime               = time.Now()
 	parsedTime     *time.Time = nil
@@ -37,5 +36,5 @@ func BuildTime() *time.Time {
 }
 
 func BuildVersion() string {
-	return fmt.Sprintf("%s (%s)", CommitHash, BuildTime().Format(TimeFormat))
+	return fmt.Sprintf("(%s)", BuildTime().Format(TimeFormat))
 }

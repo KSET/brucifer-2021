@@ -10,7 +10,6 @@ DOCKER_COMPOSE_DEV=$(DOCKER_COMPOSE) \
 PACKAGE=brucosijada.kset.org
 define LDFLAGS_MULTI
 -X '$(PACKAGE)/app/version.buildTimestamp=$(shell date --utc '+%Y-%m-%dT%H:%M:%S%z')'
--X '$(PACKAGE)/app/version.CommitHash=$(shell git rev-parse HEAD)'
 endef
 LDFLAGS=$(shell tr '\n' ' ' <<< '$(strip $(LDFLAGS_MULTI))')
 
