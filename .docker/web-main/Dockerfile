@@ -10,7 +10,7 @@ RUN make assets \
       SHARP_CMD=sharp \
       SQUOOSH_CMD=squoosh-cli
 
-FROM golang:1.17 as builder
+FROM golang:1.19 as builder
 
 WORKDIR /go/src/app
 
