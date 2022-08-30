@@ -1,4 +1,12 @@
 # Statically build app with all needed dependencies
+FROM node:18-alpine as asset-builder
+WORKDIR /app
+RUN apk update \
+    && apk add \
+      make
+COPY assets .
+RUN make assets
+
 FROM golang:1.17 as builder
 
 WORKDIR /go/src/app
@@ -12,6 +20,7 @@ COPY go.mod go.sum ./
 RUN CGO_ENABLED=0 go mod download
 
 COPY . .
+COPY --from=asset-builder assets .
 
 RUN CGO_ENABLED=0 \
     	go \

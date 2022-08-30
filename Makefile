@@ -14,8 +14,12 @@ define LDFLAGS_MULTI
 endef
 LDFLAGS=$(shell tr '\n' ' ' <<< '$(strip $(LDFLAGS_MULTI))')
 
+.PHONY: clean
+clean: assets/clean
+	rm -rf $(OUTPUT_BINARY)
+
 .PHONY: build
-build:
+build: assets
 	CGO_ENABLED=0 \
 	go \
 	build \
@@ -69,7 +73,7 @@ dev/server/stop:
     		--remove-orphans
 
 .PHONY: dev/server
-dev/server:
+dev/server: assets
 	gin \
 		--all \
 		--immediate \
@@ -82,7 +86,7 @@ dev/server:
 		main.go
 
 .PHONY: debug/build
-debug/build:
+debug/build: assets
 	CGO_ENABLED=0 \
 	go \
 	build \
@@ -136,3 +140,42 @@ docker/down:
 	$(DOCKER_COMPOSE) \
 		down \
 		--remove-orphans
+
+
+# ASSETS
+SHARP_CMD=npx sharp-cli
+SHARP_FLAGS=--progressive --quality 100 --lossless --smartSubsample
+SQUOOSH_CMD=npx @squoosh/cli
+SQUOOSH_FLAGS=--optimizer-butteraugli-target 1.85
+ASSET_LIST= \
+	assets/images/preview/bg.jpg \
+	assets/images/preview/bg-mobile.jpg
+
+.PHONY: assets
+assets: $(ASSET_LIST)
+
+.PHONY: assets/clean
+assets/clean:
+	rm -rf $(ASSET_LIST)
+
+assets/images/preview/bg.jpg:
+	$(SHARP_CMD) $(SHARP_FLAGS) \
+		--input "$(@D)/bg.svg" \
+		--output $@ \
+		resize 2560 \
+ 	&& $(SQUOOSH_CMD) $(SQUOOSH_FLAGS) \
+		--output-dir $(@D) \
+		--resize '{"enabled":true,"width":2560,"height":1440,"method":"mitchell","fitMethod":"stretch","premultiply":true,"linearRGB":true}' \
+		--mozjpeg '{"quality":85,"baseline":false,"arithmetic":false,"progressive":true,"optimize_coding":true,"smoothing":0,"color_space":3,"quant_table":3,"trellis_multipass":true,"trellis_opt_zero":true,"trellis_opt_table":true,"trellis_loops":1,"auto_subsample":true,"chroma_subsample":2,"separate_chroma_quality":false,"chroma_quality":75}' \
+		$@
+
+assets/images/preview/bg-mobile.jpg:
+	$(SHARP_CMD) $(SHARP_FLAGS) \
+		--input "$(@D)/bg-mobile.png" \
+		--output $@ \
+		resize 1080 \
+ 	&& $(SQUOOSH_CMD) $(SQUOOSH_FLAGS) \
+ 		--output-dir $(@D) \
+		--resize '{"enabled":true,"width":1080,"height":1920,"method":"mitchell","fitMethod":"stretch","premultiply":true,"linearRGB":true}' \
+		--mozjpeg '{"quality":85,"baseline":false,"arithmetic":false,"progressive":true,"optimize_coding":true,"smoothing":0,"color_space":3,"quant_table":3,"trellis_multipass":true,"trellis_opt_zero":true,"trellis_opt_table":true,"trellis_loops":1,"auto_subsample":true,"chroma_subsample":2,"separate_chroma_quality":false,"chroma_quality":75}' \
+		$@
