@@ -160,22 +160,22 @@ assets/clean:
 
 assets/images/preview/bg.jpg:
 	$(SHARP_CMD) $(SHARP_FLAGS) \
-		--input "$(@D)/bg.svg" \
-		--output $@ \
+		--input '$(@D)/bg.svg' \
+		--output '$@' \
 		resize 2560 \
- 	&& $(SQUOOSH_CMD) $(SQUOOSH_FLAGS) \
-		--output-dir $(@D) \
+	&& $(SQUOOSH_CMD) $(SQUOOSH_FLAGS) \
+		--output-dir '$(@D)' \
 		--resize '{"enabled":true,"width":2560,"height":1440,"method":"mitchell","fitMethod":"stretch","premultiply":true,"linearRGB":true}' \
 		--mozjpeg '{"quality":85,"baseline":false,"arithmetic":false,"progressive":true,"optimize_coding":true,"smoothing":0,"color_space":3,"quant_table":3,"trellis_multipass":true,"trellis_opt_zero":true,"trellis_opt_table":true,"trellis_loops":1,"auto_subsample":true,"chroma_subsample":2,"separate_chroma_quality":false,"chroma_quality":75}' \
 		$@
 
 assets/images/preview/bg-mobile.jpg:
 	$(SHARP_CMD) $(SHARP_FLAGS) \
-		--input "$(@D)/bg-mobile.png" \
-		--output $@ \
+		--input '$(@D)/bg-mobile.png' \
+		--output '$@' \
 		resize 1080 \
- 	&& $(SQUOOSH_CMD) $(SQUOOSH_FLAGS) \
- 		--output-dir $(@D) \
+	&& $(SQUOOSH_CMD) $(SQUOOSH_FLAGS) \
+		--output-dir '$(@D)' \
 		--resize '{"enabled":true,"width":1080,"height":1920,"method":"mitchell","fitMethod":"stretch","premultiply":true,"linearRGB":true}' \
 		--mozjpeg '{"quality":85,"baseline":false,"arithmetic":false,"progressive":true,"optimize_coding":true,"smoothing":0,"color_space":3,"quant_table":3,"trellis_multipass":true,"trellis_opt_zero":true,"trellis_opt_table":true,"trellis_loops":1,"auto_subsample":true,"chroma_subsample":2,"separate_chroma_quality":false,"chroma_quality":75}' \
 		$@

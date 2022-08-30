@@ -1,11 +1,14 @@
 # Statically build app with all needed dependencies
-FROM node:18-alpine as asset-builder
+FROM node:16 as asset-builder
 WORKDIR /app
-RUN apk update \
-    && apk add \
-      make
-COPY assets .
-RUN make assets
+RUN npm install --global \
+        sharp-cli \
+        @squoosh/cli
+COPY assets ./assets
+COPY ./Makefile .
+RUN make assets \
+      SHARP_CMD=sharp \
+      SQUOOSH_CMD=squoosh-cli
 
 FROM golang:1.17 as builder
 
@@ -21,7 +24,7 @@ COPY go.mod go.sum ./
 RUN CGO_ENABLED=0 go mod download
 
 COPY . .
-COPY --from=asset-builder assets .
+COPY --from=asset-builder /app/assets ./assets
 
 RUN make build \
       OUTPUT_BINARY='/brucifer'
