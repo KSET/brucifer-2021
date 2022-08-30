@@ -7,6 +7,13 @@ DOCKER_COMPOSE_DEV=$(DOCKER_COMPOSE) \
 	-f 'docker-compose.dev.yml' \
 	-f 'docker-compose.override.yml'
 
+PACKAGE=brucosijada.kset.org
+define LDFLAGS_MULTI
+-X '$(PACKAGE)/app/version.buildTimestamp=$(shell date --utc '+%Y-%m-%dT%H:%M:%S%z')'
+-X '$(PACKAGE)/app/version.CommitHash=$(shell git rev-parse HEAD)'
+endef
+LDFLAGS=$(shell tr '\n' ' ' <<< '$(strip $(LDFLAGS_MULTI))')
+
 .PHONY: build
 build:
 	CGO_ENABLED=0 \
@@ -15,7 +22,7 @@ build:
 	-a \
 	-tags osusergo,netgo \
 	-gcflags "all=-N -l" \
-	-ldflags '-s -w -extldflags "-static"' \
+	-ldflags="-s -w -extldflags \"-static\" $(shell tr '\n' ' ' <<< '$(strip $(LDFLAGS))')" \
 	-o "${OUTPUT_BINARY}" \
 	main.go
 
