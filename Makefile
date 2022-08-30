@@ -26,6 +26,13 @@ build:
 	-o "${OUTPUT_BINARY}" \
 	main.go
 
+.PHONY: format
+format:
+	gofmt -e -l -s -w .
+
+.PHONY: fmt
+fmt: format
+
 .PHONY: compact
 compact: build
 	upx --brute "${OUTPUT_BINARY}"
