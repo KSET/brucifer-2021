@@ -1,16 +1,28 @@
 <style>
-    body {
+    #img, #bg {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
         background-image: url("/assets/images/preview/bg.jpg?v={{_buildTime}}");
         background-repeat: no-repeat;
-        background-position: bottom left;
-        background-size: cover;
+        background-position: center;
+        background-size: contain;
         min-height: 100vh;
     }
 
+    #bg {
+        background-size: cover;
+        filter: blur(40px);
+        transform: scale(1.31415);
+    }
+
     @media screen and (max-width: 1380px) {
-        body {
+        #img, #bg {
             background-image: url("/assets/images/preview/bg-mobile.jpg?v={{_buildTime}}");
-            background-position: top left;
         }
     }
 </style>
+<div id="bg"></div>
+<div id="img"></div>
