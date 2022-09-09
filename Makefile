@@ -9,7 +9,7 @@ DOCKER_COMPOSE_DEV=$(DOCKER_COMPOSE) \
 
 PACKAGE=brucosijada.kset.org
 define LDFLAGS
--X '$(PACKAGE)/app/version.buildTimestamp=$(shell date --utc '+%Y-%m-%dT%H:%M:%S%z')'
+-X '$(PACKAGE)/app/version.buildTimestamp=$(shell date -u '+%Y-%m-%dT%H:%M:%S%z')'
 endef
 LDFLAGS:=$(strip $(LDFLAGS))
 
@@ -73,6 +73,7 @@ dev/server/stop:
 
 .PHONY: dev/server
 dev/server: assets
+	# go get github.com/codegangsta/gin
 	gin \
 		--all \
 		--immediate \
