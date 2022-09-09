@@ -40,6 +40,7 @@
 <script>
     var $timer = document.querySelector('.countdown-timer');
     var until = new Date('2022-12-11T20:00:00+0200');
+    var interval;
     function zeroPad(num) {
         if (num >= 10) {
             return String(num)
@@ -47,8 +48,17 @@
 
         return '0' + num;
     }
-    setInterval(function () {
-        var timeRemaining = (until - new Date()) / 1000;
+    function remainingTime() {
+        return Math.floor((until - new Date()) / 1000);
+    }
+    function removeTime() {
+        $timer.parentNode.removeChild($timer);
+    }
+    function updateTime() {
+        var timeRemaining = remainingTime();
+        if (timeRemaining <= 0) {
+            return removeTime();
+        }
         var hours = Math.floor(timeRemaining / 3600);
         var days = Math.floor(hours / 24);
         hours %= 24;
@@ -62,5 +72,13 @@
             + ":" + zeroPad(minutes)
             + ":" + zeroPad(seconds)
             ;
-    }, 397)
+    }
+    ((function () {
+        if (remainingTime() <= 0) {
+            return removeTime();
+        }
+
+        updateTime();
+        interval = setInterval(updateTime, 397);
+    })());
 </script>
