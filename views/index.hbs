@@ -3,33 +3,44 @@
     :root {
         --background-image: url("/assets/images/frontpage/bg.jpg?v={{_buildTime}}");
         --background-image-aspect-ratio: calc(1440 / 2560);
+        --countdown-right-offset: 7vw;
+        --countdown-font-size: 8.5vw;
+        --countdown-top-offset: 16%;
     }
 
     @media screen and (max-width: 980px) {
         :root {
             --background-image: url("/assets/images/frontpage/bg-mobile.jpg?v={{_buildTime}}");
             --background-image-aspect-ratio: calc(1920 / 1080);
+            --countdown-right-offset: 10vw;
+            --countdown-font-size: 10vw;
+            --countdown-top-offset: 80%;
         }
     }
 
     .countdown-timer {
         position: absolute;
-        top: 30%;
-        right: 7vw;
-        font-size: 8.5vw;
+        top: 0;
+        width: 100%;
+        right: 0;
+        padding-right: var(--countdown-right-offset);
+        text-align: right;
+        font-size: var(--countdown-font-size);
         color: var(--bruc-white);
-        text-shadow: .05em 0 var(--bruc-black);
+        text-shadow: .062em 0 var(--bruc-black);
         pointer-events: none;
         user-select: none;
+        padding-bottom: min(
+                calc(var(--background-image-aspect-ratio) * 100%),
+                calc(100vh - var(--topbar-height) - var(--footer-height) - var(--countdown-font-size) - var(--countdown-top-offset))
+        );
+        overflow: hidden;
     }
 
-    @media screen and (max-width: 980px) {
-        .countdown-timer {
-            top: 45%;
-            right: 10vw;
-            font-size: 10vw;
-            text-shadow: .062em 0 var(--bruc-black);
-        }
+    .countdown-timer::before {
+        content: "";
+        display: block;
+        padding-top: var(--countdown-top-offset);
     }
 </style>
 <div class="image-container">
@@ -41,6 +52,7 @@
     var $timer = document.querySelector('.countdown-timer');
     var until = new Date('2022-12-11T19:00:00+0200');
     var interval;
+
     function zeroPad(num) {
         if (num >= 10) {
             return String(num)
@@ -48,12 +60,15 @@
 
         return '0' + num;
     }
+
     function remainingTime() {
         return Math.floor((until - new Date()) / 1000);
     }
+
     function removeTime() {
         $timer.parentNode.removeChild($timer);
     }
+
     function updateTime() {
         var timeRemaining = remainingTime();
         if (timeRemaining <= 0) {
@@ -67,12 +82,13 @@
         timeRemaining %= 60;
         var seconds = Math.floor(timeRemaining);
         $timer.textContent =
-            zeroPad(days)
-            + ":" + zeroPad(hours)
-            + ":" + zeroPad(minutes)
-            + ":" + zeroPad(seconds)
-            ;
+                zeroPad(days)
+                + ":" + zeroPad(hours)
+                + ":" + zeroPad(minutes)
+                + ":" + zeroPad(seconds)
+        ;
     }
+
     ((function () {
         if (remainingTime() <= 0) {
             return removeTime();
