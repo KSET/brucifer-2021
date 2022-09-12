@@ -12,6 +12,7 @@
     --nav-padding-percent: 2.5;
     --nav-fade-height: 8px;
     --content-padding: 2.5;
+    --footer-height: 70px;
 
     --background-image: url("/assets/images/bg.svg");
     --background-image-aspect-ratio: calc(1080 / 1920);
@@ -300,7 +301,7 @@ footer {
     position: relative;
     display: flex;
     align-items: center;
-    height: 70px;
+    height: var(--footer-height);
     padding: 0 calc(var(--nav-padding-percent) * 1vw);
     letter-spacing: -0.022em;
     color: var(--bruc-black);
