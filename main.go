@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -41,6 +42,45 @@ var views embed.FS
 
 const defaultPort = 3000
 const defaultHost = "0.0.0.0"
+
+func cspConfig() string {
+	cspEntries := map[string][]string{
+		"default-src": {
+			"'self'",
+		},
+		"img-src": {
+			"'self'",
+		},
+		"media-src": {
+			"'self'",
+		},
+		"style-src": {
+			"'self'",
+			"fonts.googleapis.com",
+			"'unsafe-inline'",
+		},
+		"font-src": {
+			"fonts.gstatic.com",
+		},
+		"script-src": {
+			"'unsafe-inline'",
+		},
+	}
+
+	cspItems := make([]string, 0, len(cspEntries))
+	for k, v := range cspEntries {
+		cspItems = append(
+			cspItems,
+			fmt.Sprintf(
+				"%s %s",
+				k,
+				strings.Join(v, " "),
+			),
+		)
+	}
+
+	return strings.Join(cspItems, "; ")
+}
 
 func main() {
 	if err := godotenv.Load(); err != nil {
@@ -152,7 +192,7 @@ func main() {
 		helmet.New(
 			helmet.Config{
 				ReferrerPolicy:        "no-referrer-when-downgrade",
-				ContentSecurityPolicy: "default-src 'self'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com; script-src 'unsafe-inline'",
+				ContentSecurityPolicy: cspConfig(),
 			},
 		),
 	)
