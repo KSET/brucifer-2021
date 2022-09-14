@@ -1,4 +1,103 @@
 /*------------------ GLOBAL STUFF ------------------*/
+@font-face {
+    font-family: 'Myriad Pro';
+    src: local('Myriad Pro SemiCondensed'), local('MyriadPro-SemiCn'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-SemiCn.woff2') format('woff2'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-SemiCn.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: local('Myriad Pro SemiCondensed Italic'), local('MyriadPro-SemiCnIt'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-SemiCnIt.woff2') format('woff2'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-SemiCnIt.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: local('Myriad Pro Light SemiCondensed Italic'), local('MyriadPro-LightSemiCnIt'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-LightSemiCnIt.woff2') format('woff2'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-LightSemiCnIt.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: local('Myriad Pro Black SemiCondensed Italic'), local('MyriadPro-BlackSemiCnIt'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-BlackSemiCnIt.woff2') format('woff2'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-BlackSemiCnIt.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: local('Myriad Pro Semibold SemiCondensed'), local('MyriadPro-SemiboldSemiCn'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-SemiboldSemiCn.woff2') format('woff2'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-SemiboldSemiCn.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: local('Myriad Pro Semibold SemiCondensed Italic'), local('MyriadPro-SemiboldSemiCnIt'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-SemiboldSemiCnIt.woff2') format('woff2'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-SemiboldSemiCnIt.woff') format('woff');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: local('Myriad Pro Bold SemiCondensed'), local('MyriadPro-BoldSemiCn'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-BoldSemiCn.woff2') format('woff2'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-BoldSemiCn.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: local('Myriad Pro Light SemiCondensed'), local('MyriadPro-LightSemiCn'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-LightSemiCn.woff2') format('woff2'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-LightSemiCn.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: local('Myriad Pro Black SemiCondensed'), local('MyriadPro-BlackSemiCn'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-BlackSemiCn.woff2') format('woff2'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-BlackSemiCn.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: local('Myriad Pro Bold SemiCondensed Italic'), local('MyriadPro-BoldSemiCnIt'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-BoldSemiCnIt.woff2') format('woff2'),
+    url('/assets/fonts/myriad-pro/hinted-MyriadPro-BoldSemiCnIt.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
 
 :root {
     --bruc-white: #ffffff;
@@ -188,6 +287,7 @@ a {
 }
 
 main {
+    font-family: "Myriad Pro", sans-serif !important;
     position: relative;
     flex: 1;
     padding-bottom: 82px;
@@ -209,6 +309,14 @@ main {
     .contents {
         font-size: 1.125rem;
     }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: bold;
 }
 
 .contents h1,

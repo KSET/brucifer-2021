@@ -60,6 +60,7 @@ func cspConfig() string {
 			"'unsafe-inline'",
 		},
 		"font-src": {
+			"'self'",
 			"fonts.gstatic.com",
 		},
 		"script-src": {
