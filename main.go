@@ -17,6 +17,7 @@ import (
 	"brucosijada.kset.org/app/providers/database"
 	"brucosijada.kset.org/app/providers/hash"
 	"brucosijada.kset.org/app/providers/minio"
+	"brucosijada.kset.org/app/providers/requestTimer"
 	"brucosijada.kset.org/app/providers/session"
 	"brucosijada.kset.org/app/providers/viewEngine"
 	"brucosijada.kset.org/app/repo"
@@ -189,15 +190,15 @@ func main() {
 	)
 	app.Use(
 		func(c *fiber.Ctx) error {
-			// start timer
-			start := time.Now()
-			// next routes
+			timer := requestTimer.New()
+			c.Locals("timer", timer)
+
+			timer.Start("app")
 			err := c.Next()
-			// stop timer
-			stop := time.Now()
-			// Do something with response
-			c.Append("Server-Timing", fmt.Sprintf("app;dur=%v", stop.Sub(start).String()))
-			// return stack error if exist
+			timer.End("app")
+
+			c.Append("Server-Timing", timer.String())
+
 			return err
 		},
 	)
