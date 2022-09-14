@@ -113,7 +113,7 @@
     --content-padding: 2.5;
     --footer-height: 70px;
 
-    --background-image: url("/assets/images/bg.svg");
+    --background-image: none;
     --background-image-aspect-ratio: calc(1080 / 1920);
 }
 
