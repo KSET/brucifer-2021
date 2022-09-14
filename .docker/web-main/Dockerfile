@@ -1,5 +1,6 @@
 # Statically build app with all needed dependencies
 FROM node:16 as asset-builder
+RUN apt-get update && apt-get install -y libvips-dev --no-install-recommends
 WORKDIR /app
 RUN npm install --global \
         sharp-cli \
