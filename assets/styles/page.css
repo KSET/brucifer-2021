@@ -140,6 +140,10 @@ a {
 
 /*------------------ TOPBAR ------------------*/
 
+nav {
+    font-family: 'Antonio', sans-serif;
+}
+
 .white {
     color: var(--bruc-white) !important;
     fill: var(--bruc-white) !important;
@@ -325,6 +329,7 @@ h5 {
 .contents h5,
 .contents h6,
 .contents h2 {
+    font-family: 'Antonio', sans-serif;
     font-size: 1.5em;
 }
 
