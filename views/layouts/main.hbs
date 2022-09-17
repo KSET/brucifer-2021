@@ -29,7 +29,7 @@
 
     <body>
         <input id="links-opener" type="checkbox">
-        <div class="links-mobile">
+        <nav class="links-mobile">
             <header class="topbar">
                 <h1 class="title">
                     <a class="black" href="/">BRUCOŠIJADA FER-A</a>
@@ -47,12 +47,12 @@
                 </label>
             </header>
 
-            <section class="links-container">
+            <div class="links-container">
                 {{> 'partials/layouts/main/links' }}
-            </section>
-        </div>
+            </div>
+        </nav>
 
-        <header class="topbar">
+        <nav class="topbar">
             <h1 class="title">
                 <a class="black" href="/">BRUCOŠIJADA FER-A</a>
             </h1>
@@ -71,7 +71,7 @@
             <div class="links">
                 {{> 'partials/layouts/main/links' }}
             </div>
-        </header>
+        </nav>
         <div class="page-container">
             <main>
                 <div class="contents">
