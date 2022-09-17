@@ -142,6 +142,7 @@ a {
 
 nav {
     font-family: 'Antonio', sans-serif;
+    z-index: 2;
 }
 
 .white {
@@ -288,6 +289,7 @@ nav {
     flex-direction: column;
     justify-content: space-between;
     min-height: calc(100vh - var(--topbar-height));
+    background-color: var(--bg-color-bottom);
 }
 
 main {
@@ -300,6 +302,7 @@ main {
     background-repeat: no-repeat;
     background-position: top right;
     background-size: cover;
+    z-index: 1;
 }
 
 .contents {
@@ -405,6 +408,7 @@ footer::after {
     top: calc(var(--nav-fade-height) * -1);
     right: 0;
     left: 0;
+    z-index: 2;
     height: var(--nav-fade-height);
     content: "";
     background: linear-gradient(to top, var(--bg-color-bottom), transparent);
@@ -413,6 +417,7 @@ footer::after {
 footer {
     position: relative;
     display: flex;
+    z-index: 2;
     align-items: center;
     height: var(--footer-height);
     padding: 0 calc(var(--nav-padding-percent) * 1vw);
